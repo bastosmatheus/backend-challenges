@@ -3,23 +3,32 @@ import { IUserRepository } from "../interfaces/IUserRepository";
 import { prismaClient } from "../database/prismaClient";
 
 class UserRepository implements IUserRepository {
-  public async getAllUsers(): Promise<User[]> {
-    const users = await prismaClient.user.findMany();
+  public async getAll(): Promise<User[]> {
+    const users = await prismaClient.user.findMany({
+      include: {
+        created_events: true,
+        event_registration: true,
+      },
+    });
 
     return users;
   }
 
-  public async getUserById(id: number): Promise<User | null> {
-    const user = await prismaClient.user.findFirst({
+  public async getById(id: number): Promise<User | null> {
+    const user = await prismaClient.user.findUnique({
       where: {
         id,
+      },
+      include: {
+        created_events: true,
+        event_registration: true,
       },
     });
 
     return user;
   }
 
-  public async createUser(username: string, email: string, password: string): Promise<User> {
+  public async create(username: string, email: string, password: string): Promise<User> {
     const user = prismaClient.user.create({
       data: {
         username,
@@ -31,7 +40,7 @@ class UserRepository implements IUserRepository {
     return user;
   }
 
-  public async updateUser(
+  public async update(
     id: number,
     username: string,
     email: string,
@@ -51,7 +60,7 @@ class UserRepository implements IUserRepository {
     return user;
   }
 
-  public async deleteUser(id: number): Promise<void> {
+  public async delete(id: number): Promise<void> {
     const user = await prismaClient.user.delete({
       where: {
         id,

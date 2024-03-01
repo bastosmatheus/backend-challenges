@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 import { PrismaClient } from "@prisma/client";
-import { routerTools } from "./routes/ToolsRoute";
+import { routerTools } from "./api/routes/toolsRoute";
 
 const app = express();
 const jsonBodyParser = bodyParser.json();

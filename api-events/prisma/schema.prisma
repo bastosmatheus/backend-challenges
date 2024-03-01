@@ -10,13 +10,14 @@ datasource db {
 model Event {
   id                      Int                 @id @default(autoincrement())
   event_name              String
-  event_date              DateTime
-  event_time              Int
-  registration_start_date DateTime            @default(now())
-  registration_end_date   DateTime
+  event_date              DateTime            @db.Date
+  event_time              DateTime            @db.Time()
+  registration_start_date DateTime            @default(now()) @db.Date
+  registration_end_date   DateTime            @db.Date
   limit_participants      Int
   additional_infos        String?
-  event_creator_user      User                @relation(fields: [user_id], references: [id])
+  updated_at              DateTime            @updatedAt
+  event_creator_user      User                @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id                 Int
   users_registered_event  EventRegistration[]
 
