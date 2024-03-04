@@ -18,7 +18,7 @@ class EventService {
   public async create(
     event_name: string,
     event_date: Date,
-    event_time: number,
+    event_time: Date,
     registration_start_date: Date,
     registration_end_date: Date,
     limit_participants: number,
@@ -43,7 +43,7 @@ class EventService {
     id: number,
     event_name: string,
     event_date: Date,
-    event_time: number,
+    event_time: Date,
     registration_start_date: Date,
     registration_end_date: Date,
     limit_participants: number,

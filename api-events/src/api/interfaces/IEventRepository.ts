@@ -6,7 +6,7 @@ interface IEventRepository {
   create(
     event_name: string,
     event_date: Date,
-    event_time: number,
+    event_time: Date,
     registration_start_date: Date,
     registration_end_date: Date,
     limit_participants: number,
@@ -17,14 +17,14 @@ interface IEventRepository {
     id: number,
     event_name: string,
     event_date: Date,
-    event_time: number,
+    event_time: Date,
     registration_start_date: Date,
     registration_end_date: Date,
     limit_participants: number,
     user_id: number,
     additional_infos?: string
   ): Promise<Event | null>;
-  delete(id: number): Promise<void>;
+  delete(id: number): Promise<Event>;
 }
 
 export { IEventRepository };

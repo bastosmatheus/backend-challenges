@@ -1,5 +1,5 @@
 import { User } from "@prisma/client";
-import { IUserRepository } from "../interfaces/IUserRepository";
+import { EmailExists, IUserRepository, UsernameExists } from "../interfaces/IUserRepository";
 import { prismaClient } from "../database/prismaClient";
 
 class UserRepository implements IUserRepository {
@@ -19,17 +19,43 @@ class UserRepository implements IUserRepository {
       where: {
         id,
       },
-      include: {
-        created_events: true,
-        event_registration: true,
-      },
     });
 
     return user;
   }
 
-  public async create(username: string, email: string, password: string): Promise<User> {
-    const user = prismaClient.user.create({
+  public async create(
+    username: string,
+    email: string,
+    password: string
+  ): Promise<User | EmailExists | UsernameExists> {
+    const usernameExists = await prismaClient.user.findUnique({
+      where: {
+        username,
+      },
+      select: {
+        username: true,
+      },
+    });
+
+    if (usernameExists) {
+      return usernameExists;
+    }
+
+    const emailExists = await prismaClient.user.findUnique({
+      where: {
+        email,
+      },
+      select: {
+        email: true,
+      },
+    });
+
+    if (emailExists) {
+      return emailExists;
+    }
+
+    const user = await prismaClient.user.create({
       data: {
         username,
         email,
@@ -46,7 +72,17 @@ class UserRepository implements IUserRepository {
     email: string,
     password: string
   ): Promise<User | null> {
-    const user = await prismaClient.user.update({
+    const user = await prismaClient.user.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (user === null) {
+      return user;
+    }
+
+    const userUpdated = await prismaClient.user.update({
       data: {
         username,
         email,
@@ -60,12 +96,24 @@ class UserRepository implements IUserRepository {
     return user;
   }
 
-  public async delete(id: number): Promise<void> {
-    const user = await prismaClient.user.delete({
+  public async delete(id: number): Promise<User | null> {
+    const user = await prismaClient.user.findUnique({
       where: {
         id,
       },
     });
+
+    if (user === null) {
+      return user;
+    }
+
+    const userDeleted = await prismaClient.user.delete({
+      where: {
+        id,
+      },
+    });
+
+    return userDeleted;
   }
 }
 
