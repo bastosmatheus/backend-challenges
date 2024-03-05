@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import { User } from "@prisma/client";
 import { UserRepository } from "../repositories/UserRepository";
+import { EResponseUser } from "../interfaces/IUserRepository";
 import { NotFoundError } from "../errors/NotFoundError";
 import { ConflictError } from "../errors/ConflictError";
 import { Either, failure, success } from "../errors/either";
@@ -24,8 +25,8 @@ class UserService {
 
     const user = await this.userRepository.getById(id);
 
-    if (user === null) {
-      return failure(new NotFoundError("Usuário não encontrado"));
+    if (user === EResponseUser.UserNotFound) {
+      return failure(new NotFoundError("Nenhum usuário foi encontrando com o ID: " + id));
     }
 
     return success(user);
@@ -53,12 +54,16 @@ class UserService {
 
     const user = await this.userRepository.create(username, email, passwordHash);
 
-    if (Object.keys(user)[0] === "username") {
-      return failure(new ConflictError("Esse nome de usuário já existe"));
+    if (user === EResponseUser.UsernameExists) {
+      return failure(
+        new ConflictError("Não é possível usar esse nome de usuário, pois ele já existe")
+      );
     }
 
-    if (Object.keys(user)[0] === "email") {
-      return failure(new ConflictError("Esse email já existe"));
+    if (user === EResponseUser.EmailExists) {
+      return failure(
+        new ConflictError("Não é possível usar esse email, pois ele já foi cadastrado")
+      );
     }
 
     return success(user);
@@ -86,10 +91,13 @@ class UserService {
       return failure(new UnprocessableEntityError("A senha é obrigatória"));
     }
 
-    const user = await this.userRepository.update(id, username, email, password);
+    const salt = await bcrypt.genSalt(10);
+    const passwordHash = await bcrypt.hash(password, salt);
 
-    if (user === null) {
-      return failure(new NotFoundError("Usuário não encontrado"));
+    const user = await this.userRepository.update(id, username, email, passwordHash);
+
+    if (user === EResponseUser.UserNotFound) {
+      return failure(new NotFoundError("Nenhum usuário foi encontrado com o ID: " + id));
     }
 
     return success(user);
@@ -102,8 +110,8 @@ class UserService {
 
     const user = await this.userRepository.delete(id);
 
-    if (user === null) {
-      return failure(new NotFoundError("Usuário não encontrado"));
+    if (user === EResponseUser.UserNotFound) {
+      return failure(new NotFoundError("Nenhum usuário foi encontrado com o ID: " + id));
     }
 
     return success(user);

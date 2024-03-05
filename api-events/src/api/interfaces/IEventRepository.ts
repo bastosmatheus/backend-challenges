@@ -1,8 +1,14 @@
 import { Event } from "@prisma/client";
 
+enum EResponseEvent {
+  EventExists,
+  UserNotFound,
+  EventNotFound,
+}
+
 interface IEventRepository {
   getAll(): Promise<Event[]>;
-  getById(id: number): Promise<Event | null>;
+  getById(id: number): Promise<Event | EResponseEvent.EventNotFound>;
   create(
     event_name: string,
     event_date: Date,
@@ -12,7 +18,7 @@ interface IEventRepository {
     limit_participants: number,
     user_id: number,
     additional_infos?: string
-  ): Promise<Event>;
+  ): Promise<Event | EResponseEvent.UserNotFound | EResponseEvent.EventExists>;
   update(
     id: number,
     event_name: string,
@@ -21,10 +27,9 @@ interface IEventRepository {
     registration_start_date: Date,
     registration_end_date: Date,
     limit_participants: number,
-    user_id: number,
     additional_infos?: string
-  ): Promise<Event | null>;
-  delete(id: number): Promise<Event>;
+  ): Promise<Event | EResponseEvent.EventNotFound>;
+  delete(id: number): Promise<Event | EResponseEvent.EventNotFound>;
 }
 
-export { IEventRepository };
+export { IEventRepository, EResponseEvent };

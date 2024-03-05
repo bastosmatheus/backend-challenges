@@ -39,7 +39,7 @@ class UserController {
       message: "Usuário criado com sucesso",
       type: "Created",
       statusCode: 201,
-      userUpdated: user.value,
+      userCreated: user.value,
     });
   }
 

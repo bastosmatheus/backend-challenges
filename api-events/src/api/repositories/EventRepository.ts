@@ -1,6 +1,6 @@
 import { Event } from "@prisma/client";
 import { prismaClient } from "../database/prismaClient";
-import { IEventRepository } from "../interfaces/IEventRepository";
+import { EResponseEvent, IEventRepository } from "../interfaces/IEventRepository";
 
 class EventRepository implements IEventRepository {
   public async getAll(): Promise<Event[]> {
@@ -9,12 +9,16 @@ class EventRepository implements IEventRepository {
     return events;
   }
 
-  public async getById(id: number): Promise<Event | null> {
-    const event = await prismaClient.event.findFirst({
+  public async getById(id: number): Promise<Event | EResponseEvent.EventNotFound> {
+    const event = await prismaClient.event.findUnique({
       where: {
         id,
       },
     });
+
+    if (event === null) {
+      return EResponseEvent.EventNotFound;
+    }
 
     return event;
   }
@@ -28,8 +32,31 @@ class EventRepository implements IEventRepository {
     limit_participants: number,
     user_id: number,
     additional_infos?: string
-  ): Promise<Event> {
-    const event = prismaClient.event.create({
+  ): Promise<Event | EResponseEvent.UserNotFound | EResponseEvent.EventExists> {
+    const user = await prismaClient.user.findUnique({
+      where: {
+        id: user_id,
+      },
+    });
+
+    if (user === null) {
+      return EResponseEvent.UserNotFound;
+    }
+
+    const eventExists = await prismaClient.event.findUnique({
+      where: {
+        event_name,
+      },
+      select: {
+        event_name: true,
+      },
+    });
+
+    if (eventExists) {
+      return EResponseEvent.EventExists;
+    }
+
+    const event = await prismaClient.event.create({
       data: {
         event_name,
         event_date,
@@ -53,10 +80,19 @@ class EventRepository implements IEventRepository {
     registration_start_date: Date,
     registration_end_date: Date,
     limit_participants: number,
-    user_id: number,
     additional_infos?: string
-  ): Promise<Event | null> {
-    const event = await prismaClient.event.update({
+  ): Promise<Event | EResponseEvent.EventNotFound> {
+    const event = await prismaClient.event.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (event === null) {
+      return EResponseEvent.EventNotFound;
+    }
+
+    const eventUpdated = await prismaClient.event.update({
       data: {
         event_name,
         event_date,
@@ -64,7 +100,6 @@ class EventRepository implements IEventRepository {
         registration_start_date,
         registration_end_date,
         limit_participants,
-        user_id,
         additional_infos,
       },
       where: {
@@ -72,15 +107,19 @@ class EventRepository implements IEventRepository {
       },
     });
 
-    return event;
+    return eventUpdated;
   }
 
-  public async delete(id: number): Promise<Event> {
+  public async delete(id: number): Promise<Event | EResponseEvent.EventNotFound> {
     const event = await prismaClient.event.delete({
       where: {
         id,
       },
     });
+
+    if (event === null) {
+      return EResponseEvent.EventNotFound;
+    }
 
     return event;
   }

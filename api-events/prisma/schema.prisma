@@ -9,7 +9,7 @@ datasource db {
 
 model Event {
   id                      Int                 @id @default(autoincrement())
-  event_name              String
+  event_name              String              @unique
   event_date              DateTime            @db.Date
   event_time              DateTime            @db.Time()
   registration_start_date DateTime            @default(now()) @db.Date
@@ -21,6 +21,7 @@ model Event {
   user_id                 Int
   users_registered_event  EventRegistration[]
 
+  @@unique([id, event_name, event_date, event_time, limit_participants])
   @@map("events")
 }
 

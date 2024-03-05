@@ -1,23 +1,26 @@
 import { User } from "@prisma/client";
 
-type EmailExists = {
-  email: string;
-};
-
-type UsernameExists = {
-  username: string;
-};
+enum EResponseUser {
+  EmailExists,
+  UsernameExists,
+  UserNotFound,
+}
 
 interface IUserRepository {
   getAll(): Promise<User[]>;
-  getById(id: number): Promise<User | null>;
+  getById(id: number): Promise<User | EResponseUser.UserNotFound>;
   create(
     username: string,
     email: string,
     password: string
-  ): Promise<User | EmailExists | UsernameExists>;
-  update(id: number, username: string, email: string, password: string): Promise<User | null>;
-  delete(id: number): Promise<User | null>;
+  ): Promise<User | EResponseUser.UsernameExists | EResponseUser.EmailExists>;
+  update(
+    id: number,
+    username: string,
+    email: string,
+    password: string
+  ): Promise<User | EResponseUser.UserNotFound>;
+  delete(id: number): Promise<User | EResponseUser.UserNotFound>;
 }
 
-export { IUserRepository, EmailExists, UsernameExists };
+export { IUserRepository, EResponseUser };

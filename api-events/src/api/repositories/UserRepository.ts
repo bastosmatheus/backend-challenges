@@ -1,6 +1,6 @@
 import { User } from "@prisma/client";
-import { EmailExists, IUserRepository, UsernameExists } from "../interfaces/IUserRepository";
 import { prismaClient } from "../database/prismaClient";
+import { EResponseUser, IUserRepository } from "../interfaces/IUserRepository";
 
 class UserRepository implements IUserRepository {
   public async getAll(): Promise<User[]> {
@@ -14,12 +14,20 @@ class UserRepository implements IUserRepository {
     return users;
   }
 
-  public async getById(id: number): Promise<User | null> {
+  public async getById(id: number): Promise<User | EResponseUser.UserNotFound> {
     const user = await prismaClient.user.findUnique({
       where: {
         id,
       },
+      include: {
+        created_events: true,
+        event_registration: true,
+      },
     });
+
+    if (user === null) {
+      return EResponseUser.UserNotFound;
+    }
 
     return user;
   }
@@ -28,7 +36,7 @@ class UserRepository implements IUserRepository {
     username: string,
     email: string,
     password: string
-  ): Promise<User | EmailExists | UsernameExists> {
+  ): Promise<User | EResponseUser.UsernameExists | EResponseUser.EmailExists> {
     const usernameExists = await prismaClient.user.findUnique({
       where: {
         username,
@@ -39,7 +47,7 @@ class UserRepository implements IUserRepository {
     });
 
     if (usernameExists) {
-      return usernameExists;
+      return EResponseUser.UsernameExists;
     }
 
     const emailExists = await prismaClient.user.findUnique({
@@ -52,7 +60,7 @@ class UserRepository implements IUserRepository {
     });
 
     if (emailExists) {
-      return emailExists;
+      return EResponseUser.EmailExists;
     }
 
     const user = await prismaClient.user.create({
@@ -71,7 +79,7 @@ class UserRepository implements IUserRepository {
     username: string,
     email: string,
     password: string
-  ): Promise<User | null> {
+  ): Promise<User | EResponseUser.UserNotFound> {
     const user = await prismaClient.user.findUnique({
       where: {
         id,
@@ -79,7 +87,7 @@ class UserRepository implements IUserRepository {
     });
 
     if (user === null) {
-      return user;
+      return EResponseUser.UserNotFound;
     }
 
     const userUpdated = await prismaClient.user.update({
@@ -93,10 +101,10 @@ class UserRepository implements IUserRepository {
       },
     });
 
-    return user;
+    return userUpdated;
   }
 
-  public async delete(id: number): Promise<User | null> {
+  public async delete(id: number): Promise<User | EResponseUser.UserNotFound> {
     const user = await prismaClient.user.findUnique({
       where: {
         id,
@@ -104,7 +112,7 @@ class UserRepository implements IUserRepository {
     });
 
     if (user === null) {
-      return user;
+      return EResponseUser.UserNotFound;
     }
 
     const userDeleted = await prismaClient.user.delete({

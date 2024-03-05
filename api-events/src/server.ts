@@ -3,6 +3,7 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import { routerUser } from "./api/routes/UserRoute";
 import { routerEvent } from "./api/routes/EventRoute";
+import { routerEventRegistration } from "./api/routes/EventRegistrationRoute";
 
 const app = express();
 
@@ -14,6 +15,7 @@ app.use(jsonBodyParser);
 app.use(urlencoded);
 app.use(routerUser);
 app.use(routerEvent);
+app.use(routerEventRegistration);
 
 app.listen(3000, () => {
   console.log("servidor rodando na porta 3000");
