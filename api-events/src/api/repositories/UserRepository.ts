@@ -123,6 +123,20 @@ class UserRepository implements IUserRepository {
 
     return userDeleted;
   }
+
+  public async login(email: string): Promise<User | EResponseUser.UserNotFound> {
+    const userExists = await prismaClient.user.findUnique({
+      where: {
+        email,
+      },
+    });
+
+    if (userExists === null) {
+      return EResponseUser.UserNotFound;
+    }
+
+    return userExists;
+  }
 }
 
 export { UserRepository };

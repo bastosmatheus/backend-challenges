@@ -21,6 +21,7 @@ interface IUserRepository {
     password: string
   ): Promise<User | EResponseUser.UserNotFound>;
   delete(id: number): Promise<User | EResponseUser.UserNotFound>;
+  login(email: string): Promise<User | EResponseUser.UserNotFound>;
 }
 
 export { IUserRepository, EResponseUser };

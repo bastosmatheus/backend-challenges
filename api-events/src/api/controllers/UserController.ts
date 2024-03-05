@@ -81,6 +81,22 @@ class UserController {
       userDeleted: user.value,
     });
   }
+
+  public async loginUser(req: Request, res: Response) {
+    const { email, password } = req.body;
+
+    const userService = new UserService();
+
+    const login = await userService.login(email, password);
+
+    if (login.isFailure()) {
+      return res.status(login.value.statusCode).json(login.value);
+    }
+
+    return res
+      .status(200)
+      .json({ message: "Usuário logado", type: "OK", statusCode: 200, userLogged: login.value });
+  }
 }
 
 export default new UserController();

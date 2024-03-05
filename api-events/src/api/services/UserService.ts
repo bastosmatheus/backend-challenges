@@ -1,4 +1,5 @@
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import { User } from "@prisma/client";
 import { UserRepository } from "../repositories/UserRepository";
 import { EResponseUser } from "../interfaces/IUserRepository";
@@ -115,6 +116,37 @@ class UserService {
     }
 
     return success(user);
+  }
+
+  public async login(
+    email: string,
+    password: string
+  ): Promise<Either<NotFoundError | UnprocessableEntityError, { token: string }>> {
+    if (!email || email === "") {
+      return failure(new UnprocessableEntityError("O email é obrigatório"));
+    }
+
+    if (!password || password === "") {
+      return failure(new UnprocessableEntityError("A senha é obrigatória"));
+    }
+
+    const user = await this.userRepository.login(email);
+
+    if (user === EResponseUser.UserNotFound) {
+      return failure(new NotFoundError("Nenhum usuário encontrado com esse email: " + email));
+    }
+
+    const checkPassword = await bcrypt.compare(password, user.password);
+
+    if (!checkPassword) {
+      return failure(new NotFoundError("Senha inválida"));
+    }
+
+    const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_PASS ?? "", {
+      expiresIn: "30d",
+    });
+
+    return success({ token });
   }
 }
 
