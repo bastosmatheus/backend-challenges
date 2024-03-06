@@ -6,6 +6,7 @@ Uma api que tem como objetivo possibilitar a criação de eventos, tudo isso fei
 
 - <a href="#techs">Tecnologias utilizadas</a>
 - <a href="#project">Como rodar esse projeto?</a>
+- <a href="#api">Principais endpoints da API</a>
 
 <h2 id="techs">Tecnologias Utilizadas 🖥️</h2>
 
@@ -54,16 +55,16 @@ npm install
 npm run dev
 ```
 
-<h2 id="api">Principais endpoints da API</h2>
+<h2 id="api">Principais endpoints da API 🗺️</h2>
 
-| ROUTE                        | DESCRIPTION                                                                                                 |
-| ---------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| <kbd>POST /users</kbd>       | cria um usuário, veja mais na [resposta da requisição](#post-users)                                         |
-| <kbd>POST /users/login</kbd> | autentica um usuário na API, veja [detalhes da requisição](#post-users-login)                                     |
-| <kbd>POST /events</kbd>      | cria um evento, veja mais na [resposta da requisição](#post-events)                                         |
-| <kbd>GET /events</kbd>       | informa todos os eventos na API, veja [detalhes da requisição](#get-events)                                 |
-| <kbd>POST /events-registrations</kbd>      | registra uma inscrição de um usuário a um evento, veja [resposta da requisição](#post-events-registrations) |
-| <kbd>GET /events-registrations</kbd>       | retorna todos os registros de eventos na API, veja [detalhes da requisição](#get-events-registrations)                   |
+| ROUTE                                 | DESCRIPTION                                                                                                         |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| <kbd>POST /users</kbd>                | cria um usuário, veja mais na [resposta da requisição](#post-users)                                                 |
+| <kbd>POST /users/login</kbd>          | autentica um usuário na API, veja [detalhes da requisição](#post-users-login)                                       |
+| <kbd>POST /events</kbd>               | cria um evento, veja mais na [resposta da requisição](#post-events)                                                 |
+| <kbd>GET /events</kbd>                | informa todos os eventos na API, veja [detalhes da requisição](#get-events)                                         |
+| <kbd>POST /events-registrations</kbd> | registra uma inscrição de um usuário a um evento, veja mais na [resposta da requisição](#post-events-registrations) |
+| <kbd>GET /events-registrations</kbd>  | retorna todos os registros de eventos na API, veja [detalhes da requisição](#get-events-registrations)              |
 
 <h3 id="#post-users">POST /users</h3>
 
