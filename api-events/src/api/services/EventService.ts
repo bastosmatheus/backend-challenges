@@ -35,7 +35,6 @@ class EventService {
     event_name: string,
     event_date: Date,
     event_time: Date,
-    registration_start_date: Date,
     registration_end_date: Date,
     limit_participants: number,
     user_id: number,
@@ -53,10 +52,6 @@ class EventService {
       return failure(new UnprocessableEntityError("O horário de inicio é obrigatório"));
     }
 
-    if (!registration_start_date) {
-      return failure(new UnprocessableEntityError("Informe a data que começam as inscrições"));
-    }
-
     if (!limit_participants) {
       return failure(new UnprocessableEntityError("Informe o número máximo de participantes"));
     }
@@ -71,7 +66,6 @@ class EventService {
       event_name,
       event_date,
       event_time,
-      registration_start_date,
       registration_end_date,
       limit_participants,
       user_id,
@@ -96,7 +90,6 @@ class EventService {
     event_name: string,
     event_date: Date,
     event_time: Date,
-    registration_start_date: Date,
     registration_end_date: Date,
     limit_participants: number,
     additional_infos?: string
@@ -117,10 +110,6 @@ class EventService {
       return failure(new UnprocessableEntityError("O horário de inicio é obrigatório"));
     }
 
-    if (!registration_start_date) {
-      return failure(new UnprocessableEntityError("Informe a data que começam as inscrições"));
-    }
-
     if (!limit_participants) {
       return failure(new UnprocessableEntityError("Informe o número máximo de participantes"));
     }
@@ -130,7 +119,6 @@ class EventService {
       event_name,
       event_date,
       event_time,
-      registration_start_date,
       registration_end_date,
       limit_participants,
       additional_infos ?? ""

@@ -68,8 +68,6 @@ class EventRegistrationRepository implements IEventRegistrationRepository {
       },
     });
 
-    console.log(userIsAlreadyRegistered);
-
     if (userIsAlreadyRegistered) {
       return EResponseEventRegistration.UserIsAlreadyRegistered;
     }

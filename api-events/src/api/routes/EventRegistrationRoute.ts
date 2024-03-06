@@ -1,7 +1,6 @@
 import { Router } from "express";
 import EventRegistrationController from "../controllers/EventRegistrationController";
 
-// criar uma classe para acesso da rota
 const routerEventRegistration = Router();
 
 routerEventRegistration.get(

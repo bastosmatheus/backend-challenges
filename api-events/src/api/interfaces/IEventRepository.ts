@@ -13,7 +13,6 @@ interface IEventRepository {
     event_name: string,
     event_date: Date,
     event_time: Date,
-    registration_start_date: Date,
     registration_end_date: Date,
     limit_participants: number,
     user_id: number,
@@ -24,7 +23,6 @@ interface IEventRepository {
     event_name: string,
     event_date: Date,
     event_time: Date,
-    registration_start_date: Date,
     registration_end_date: Date,
     limit_participants: number,
     additional_infos?: string

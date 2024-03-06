@@ -2,7 +2,6 @@ import { Router } from "express";
 import AuthToken from "../middlewares/AuthToken";
 import UserController from "../controllers/UserController";
 
-// criar uma classe para acesso da rota
 const routerUser = Router();
 
 routerUser.get("/users", AuthToken.verifyToken, UserController.getAllUsers);

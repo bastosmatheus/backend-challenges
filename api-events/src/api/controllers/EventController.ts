@@ -28,7 +28,6 @@ class EventController {
       event_name,
       event_date,
       event_time,
-      registration_start_date,
       registration_end_date,
       limit_participants,
       user_id,
@@ -40,7 +39,6 @@ class EventController {
       event_name,
       event_date,
       event_time,
-      registration_start_date,
       registration_end_date,
       limit_participants,
       user_id
@@ -61,14 +59,8 @@ class EventController {
   public async updateEvent(req: Request, res: Response) {
     const { id } = req.params;
 
-    const {
-      event_name,
-      event_date,
-      event_time,
-      registration_start_date,
-      registration_end_date,
-      limit_participants,
-    } = req.body;
+    const { event_name, event_date, event_time, registration_end_date, limit_participants } =
+      req.body;
 
     const eventService = new EventService();
 
@@ -77,7 +69,6 @@ class EventController {
       event_name,
       event_date,
       event_time,
-      registration_start_date,
       registration_end_date,
       limit_participants
     );
