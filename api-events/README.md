@@ -62,8 +62,8 @@ npm run dev
 | <kbd>POST /users/login</kbd> | autentica um usuário na API, veja [detalhes da requisição](#post-users-login)                                     |
 | <kbd>POST /events</kbd>      | cria um evento, veja mais na [resposta da requisição](#post-events)                                         |
 | <kbd>GET /events</kbd>       | informa todos os eventos na API, veja [detalhes da requisição](#get-events)                                 |
-| <kbd>POST /events</kbd>      | registra uma inscrição de um usuário a um evento, veja [resposta da requisição](#post-events-registrations) |
-| <kbd>GET /events</kbd>       | retorna todos os registros de eventos na API, veja [detalhes da requisição](#get-events-registrations)                   |
+| <kbd>POST /events-registrations</kbd>      | registra uma inscrição de um usuário a um evento, veja [resposta da requisição](#post-events-registrations) |
+| <kbd>GET /events-registrations</kbd>       | retorna todos os registros de eventos na API, veja [detalhes da requisição](#get-events-registrations)                   |
 
 <h3 id="#post-users">POST /users</h3>
 
