@@ -4,8 +4,8 @@ Uma api que tem como objetivo possibilitar a criação de eventos, tudo isso fei
 
 <h2>Tópicos 📍</h2>
 
-- <a href="techs">Tecnologias utilizadas</a>
-- <a href="project">Como roda esse projeto?</a>
+- <a href="#techs">Tecnologias utilizadas</a>
+- <a href="#project">Como rodar esse projeto?</a>
 
 <h2 id="techs">Tecnologias Utilizadas 🖥️</h2>
 
@@ -59,11 +59,11 @@ npm run dev
 | ROUTE                        | DESCRIPTION                                                                                                 |
 | ---------------------------- | ----------------------------------------------------------------------------------------------------------- |
 | <kbd>POST /users</kbd>       | cria um usuário, veja mais na [resposta da requisição](#post-users)                                         |
-| <kbd>POST /users/login</kbd> | autentica um usuário na API, veja [detalhes da requisição](#post-login)                                     |
+| <kbd>POST /users/login</kbd> | autentica um usuário na API, veja [detalhes da requisição](#post-users-login)                                     |
 | <kbd>POST /events</kbd>      | cria um evento, veja mais na [resposta da requisição](#post-events)                                         |
 | <kbd>GET /events</kbd>       | informa todos os eventos na API, veja [detalhes da requisição](#get-events)                                 |
 | <kbd>POST /events</kbd>      | registra uma inscrição de um usuário a um evento, veja [resposta da requisição](#post-events-registrations) |
-| <kbd>GET /events</kbd>       | informa todos os eventos na API, veja [detalhes da requisição](#get-events-registrations)                   |
+| <kbd>GET /events</kbd>       | retorna todos os registros de eventos na API, veja [detalhes da requisição](#get-events-registrations)                   |
 
 <h3 id="#post-users">POST /users</h3>
 
@@ -93,7 +93,7 @@ npm run dev
 }
 ```
 
-<h3 id="#post-login">POST /users/login</h3>
+<h3 id="#post-users-login">POST /users/login</h3>
 
 **REQUISIÇÃO**
 
