@@ -58,8 +58,8 @@ npm run dev
 | ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
 | <kbd>POST /tools</kbd>        | cria uma ferramenta na API, veja [detalhes da requisição](#post-tools)                                                           |
 | <kbd>GET /tools</kbd>         | retorna todas ferramentas já registradas, veja mais na [resposta da requisição](#get-tools)                                      |
-| <kbd>GET /tools?tag=</kbd>    | retorna todas ferramentas que contenham uma tag correspondente a da query, veja mais na [resposta da requisição](#get-tools-tag) |
-| <kbd>DELETE /tools/{id}</kbd> | deleta uma ferramenta, veja [detalhes da requisição](#get-events)                                                                |
+| <kbd>GET /tools?tag=</kbd>    | retorna todas ferramentas que contenham uma tag correspondente a da query, veja mais na [resposta da requisição](#get-tools-tags) |
+| <kbd>DELETE /tools/{id}</kbd> | deleta uma ferramenta, veja [detalhes da requisição](#delete-tools)                                                                |
 
 <h3 id="#post-tools">POST /tools</h3>
 
