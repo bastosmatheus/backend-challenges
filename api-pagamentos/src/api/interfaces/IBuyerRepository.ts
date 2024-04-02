@@ -1,4 +1,8 @@
-import { IBuyer } from "./IBuyer";
+type Buyer = {
+  id: number;
+  name: string;
+  cpf: string;
+};
 
 enum EBuyerResponse {
   BuyerNotFound,
@@ -6,12 +10,12 @@ enum EBuyerResponse {
 }
 
 interface IBuyerRepository {
-  getAll(): Promise<IBuyer[]>;
-  findById(id: number): Promise<IBuyer | EBuyerResponse.BuyerNotFound>;
-  findByCPF(cpf: string): Promise<IBuyer | EBuyerResponse.BuyerNotFound>;
-  create(name: string, cpf: string): Promise<IBuyer | EBuyerResponse.CPFAlreadyExists>;
-  update(id: number, name: string, cpf: string): Promise<IBuyer | EBuyerResponse.BuyerNotFound>;
-  delete(id: number): Promise<IBuyer | EBuyerResponse.BuyerNotFound>;
+  getAll(): Promise<Buyer[]>;
+  getById(id: number): Promise<Buyer | EBuyerResponse.BuyerNotFound>;
+  getByCpf(cpf: string): Promise<Buyer | EBuyerResponse.BuyerNotFound>;
+  create(name: string, cpf: string): Promise<Buyer | EBuyerResponse.CPFAlreadyExists>;
+  update(id: number, name: string): Promise<Buyer | EBuyerResponse.BuyerNotFound>;
+  delete(id: number): Promise<Buyer | EBuyerResponse.BuyerNotFound>;
 }
 
-export { IBuyerRepository, EBuyerResponse };
+export { IBuyerRepository, EBuyerResponse, Buyer };

@@ -1,18 +1,17 @@
-import { sql } from "../../setup";
-import { IBuyer } from "../interfaces/IBuyer";
-import { EBuyerResponse, IBuyerRepository } from "../interfaces/IBuyerRepository";
+import { EBuyerResponse, IBuyerRepository, Buyer } from "../interfaces/IBuyerRepository";
+import { sql } from "../database/db";
 
 class BuyerRepository implements IBuyerRepository {
-  public async getAll(): Promise<IBuyer[]> {
-    const buyers = await sql<IBuyer[]>/*sql*/ `
-    SELECT * FROM buyers
-  `;
+  public async getAll(): Promise<Buyer[]> {
+    const buyers = await sql<Buyer[]>/*sql*/ `
+      SELECT * FROM buyers
+    `;
 
     return buyers;
   }
 
-  public async findById(id: number): Promise<IBuyer | EBuyerResponse.BuyerNotFound> {
-    const [buyer] = await sql<IBuyer[]>/*sql*/ `
+  public async getById(id: number): Promise<Buyer | EBuyerResponse.BuyerNotFound> {
+    const [buyer] = await sql<Buyer[]>/*sql*/ `
       SELECT * FROM buyers
       WHERE id = ${id}
     `;
@@ -24,11 +23,11 @@ class BuyerRepository implements IBuyerRepository {
     return buyer;
   }
 
-  public async findByCPF(cpf: string): Promise<IBuyer | EBuyerResponse.BuyerNotFound> {
-    const [buyer] = await sql<IBuyer[]>/*sql*/ `
-    SELECT * FROM buyers
-    WHERE cpf = ${cpf}
-  `;
+  public async getByCpf(cpf: string): Promise<Buyer | EBuyerResponse.BuyerNotFound> {
+    const [buyer] = await sql<Buyer[]>/*sql*/ `
+      SELECT * FROM buyers
+      WHERE cpf = ${cpf}
+    `;
 
     if (typeof buyer === "undefined") {
       return EBuyerResponse.BuyerNotFound;
@@ -37,20 +36,17 @@ class BuyerRepository implements IBuyerRepository {
     return buyer;
   }
 
-  public async create(
-    name: string,
-    cpf: string
-  ): Promise<IBuyer | EBuyerResponse.CPFAlreadyExists> {
-    const [cpfExists] = await sql<IBuyer[]>/*sql*/ `
-      SELECT * FROM buyer
+  public async create(name: string, cpf: string): Promise<Buyer | EBuyerResponse.CPFAlreadyExists> {
+    const [cpfExists] = await sql<Buyer[]>/*sql*/ `
+      SELECT * FROM buyers
       WHERE cpf = ${cpf}
-  `;
+    `;
 
     if (cpfExists) {
       return EBuyerResponse.CPFAlreadyExists;
     }
 
-    const [buyer] = await sql<IBuyer[]>/*sql*/ `
+    const [buyer] = await sql<Buyer[]>/*sql*/ `
       INSERT INTO buyers (name, cpf)
       VALUES (${name}, ${cpf})
 
@@ -60,8 +56,8 @@ class BuyerRepository implements IBuyerRepository {
     return buyer;
   }
 
-  public async update(id: number, name: string): Promise<IBuyer | EBuyerResponse.BuyerNotFound> {
-    const [buyer] = await sql<IBuyer[]>/*sql*/ `
+  public async update(id: number, name: string): Promise<Buyer | EBuyerResponse.BuyerNotFound> {
+    const [buyer] = await sql<Buyer[]>/*sql*/ `
       SELECT * FROM buyers
       WHERE id = ${id}
     `;
@@ -70,7 +66,7 @@ class BuyerRepository implements IBuyerRepository {
       return EBuyerResponse.BuyerNotFound;
     }
 
-    const [buyerUpdated] = await sql<IBuyer[]>/*sql*/ `
+    const [buyerUpdated] = await sql<Buyer[]>/*sql*/ `
       UPDATE buyers
       SET name = ${name}
       WHERE id = ${id}
@@ -79,8 +75,8 @@ class BuyerRepository implements IBuyerRepository {
     return buyerUpdated;
   }
 
-  public async delete(id: number): Promise<IBuyer | EBuyerResponse.BuyerNotFound> {
-    const [buyer] = await sql<IBuyer[]>/*sql*/ `
+  public async delete(id: number): Promise<Buyer | EBuyerResponse.BuyerNotFound> {
+    const [buyer] = await sql<Buyer[]>/*sql*/ `
       SELECT * FROM buyers
       WHERE id = ${id}
     `;
@@ -89,7 +85,7 @@ class BuyerRepository implements IBuyerRepository {
       return EBuyerResponse.BuyerNotFound;
     }
 
-    const [buyerDeleted] = await sql<IBuyer[]>/*sql*/ `
+    const [buyerDeleted] = await sql<Buyer[]>/*sql*/ `
       DELETE FROM buyers
       WHERE id = ${id}
     `;
