@@ -5,16 +5,17 @@ async function createTableBuyers() {
     CREATE TABLE IF NOT EXISTS buyers (
       id SERIAL PRIMARY KEY,
       buyer_name TEXT,
-      cpf CHAR(11) UNIQUE
+      cpf CHAR(11) UNIQUE,
+      created_at DATE DEFAULT NOW()
     )
   `;
 }
 
-async function createTableFormsPayments() {
+async function createTablePaymentStatus() {
   await sql/*sql*/ `
-    CREATE TABLE IF NOT EXISTS forms_payments (
+    CREATE TABLE IF NOT EXISTS payments_status (
       id SERIAL PRIMARY KEY,
-      payment_name TEXT UNIQUE
+      name_status TEXT UNIQUE
     )
   `;
 }
@@ -24,9 +25,11 @@ async function createTablePaymentsInfos() {
     CREATE TABLE IF NOT EXISTS payments_infos (
       id SERIAL PRIMARY KEY,
       price REAL,
-      payment_status TEXT,
-      id_form_payment SERIAL REFERENCES forms_payments(id),
-      id_buyer SERIAL REFERENCES buyers(id)
+      created_at DATE DEFAULT NOW(),
+      id_status INTEGER REFERENCES payments_status(id),
+      id_buyer INTEGER REFERENCES buyers(id),
+      id_card INTEGER REFERENCES cards(id),
+      id_pix INTEGER REFERENCES pixs(id)
     )
   `;
 }
@@ -39,7 +42,8 @@ async function createTableCards() {
       card_number TEXT UNIQUE,
       cvv CHAR(3),
       expiration_date DATE,
-      id_buyer SERIAL REFERENCES buyers(id)
+      created_at DATE DEFAULT NOW(),
+      id_buyer INTEGER REFERENCES buyers(id)
     )
   `;
 }
@@ -49,13 +53,14 @@ async function createTablePixs() {
     CREATE TABLE IF NOT EXISTS pixs (
       id SERIAL PRIMARY KEY,
       code_generated TEXT UNIQUE,
-      id_buyer SERIAL REFERENCES buyers(id)
+      created_at DATE DEFAULT NOW(),
+      id_buyer INTEGER REFERENCES buyers(id)
     )
   `;
 }
 
 createTableBuyers();
-createTableFormsPayments();
+createTablePaymentStatus();
 createTablePaymentsInfos();
 createTableCards();
 createTablePixs();

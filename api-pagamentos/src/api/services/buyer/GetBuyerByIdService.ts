@@ -1,9 +1,9 @@
 import { z } from "zod";
-import { NotFoundError } from "../errors/NotFoundError";
-import { BuyerRepository } from "../repositories/BuyerRepository";
-import { BadRequestError } from "../errors/BadRequestError";
-import { Buyer, EBuyerResponse } from "../interfaces/IBuyerRepository";
-import { Either, failure, success } from "../errors/either";
+import { NotFoundError } from "../../errors/NotFoundError";
+import { BuyerRepository } from "../../repositories/BuyerRepository";
+import { BadRequestError } from "../../errors/BadRequestError";
+import { Buyer, EBuyerResponse } from "../../interfaces/IBuyerRepository";
+import { Either, failure, success } from "../../errors/either";
 
 class GetBuyerByIdService {
   constructor(private buyerRepository: BuyerRepository) {}

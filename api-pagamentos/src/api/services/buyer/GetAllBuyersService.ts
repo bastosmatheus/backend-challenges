@@ -1,5 +1,5 @@
-import { Buyer } from "../interfaces/IBuyerRepository";
-import { BuyerRepository } from "../repositories/BuyerRepository";
+import { Buyer } from "../../interfaces/IBuyerRepository";
+import { BuyerRepository } from "../../repositories/BuyerRepository";
 
 class GetAllBuyersService {
   constructor(private buyerRepository: BuyerRepository) {}

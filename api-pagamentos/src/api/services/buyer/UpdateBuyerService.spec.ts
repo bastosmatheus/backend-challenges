@@ -1,7 +1,7 @@
-import { Failure, Success } from "../errors/either";
+import { Failure, Success } from "../../errors/either";
 import { UpdateBuyerService } from "./UpdateBuyerService";
 import { CreateBuyerService } from "./CreateBuyerService";
-import { InMemoryBuyerRepository } from "../repositories/in-memory/InMemoryBuyerRepository";
+import { InMemoryBuyerRepository } from "../../repositories/in-memory/InMemoryBuyerRepository";
 import { it, describe, expect, beforeEach } from "vitest";
 
 let buyerRepository: InMemoryBuyerRepository;

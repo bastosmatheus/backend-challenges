@@ -1,6 +1,6 @@
 import { CreateBuyerService } from "./CreateBuyerService";
-import { GetAllBuyersService } from "./GetAllBuyersService";
-import { InMemoryBuyerRepository } from "../repositories/in-memory/InMemoryBuyerRepository";
+import { GetAllBuyersService } from "../buyer/GetAllBuyersService";
+import { InMemoryBuyerRepository } from "../../repositories/in-memory/InMemoryBuyerRepository";
 import { it, describe, expect, beforeEach } from "vitest";
 
 let buyerRepository: InMemoryBuyerRepository;

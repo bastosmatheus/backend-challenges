@@ -1,9 +1,9 @@
 import { z } from "zod";
-import { ConflictError } from "../errors/ConflictError";
-import { BadRequestError } from "../errors/BadRequestError";
-import { BuyerRepository } from "../repositories/BuyerRepository";
-import { Buyer, EBuyerResponse } from "../interfaces/IBuyerRepository";
-import { Either, failure, success } from "../errors/either";
+import { ConflictError } from "../../errors/ConflictError";
+import { BadRequestError } from "../../errors/BadRequestError";
+import { BuyerRepository } from "../../repositories/BuyerRepository";
+import { Buyer, EBuyerResponse } from "../../interfaces/IBuyerRepository";
+import { Either, failure, success } from "../../errors/either";
 
 class CreateBuyerService {
   constructor(private buyerRepository: BuyerRepository) {}
