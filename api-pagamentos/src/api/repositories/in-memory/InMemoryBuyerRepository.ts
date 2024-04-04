@@ -64,7 +64,7 @@ class InMemoryBuyerRepository implements IBuyerRepository {
       return EBuyerResponse.BuyerNotFound;
     }
 
-    this.buyers.push(buyer);
+    this.buyers.pop();
 
     return buyer;
   }

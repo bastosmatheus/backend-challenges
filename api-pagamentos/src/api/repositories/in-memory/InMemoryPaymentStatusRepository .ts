@@ -53,7 +53,7 @@ class InMemoryPaymentStatusRepository implements IPaymentStatusRepository {
       return EPaymentStatusResponse.PaymentStatusNotFound;
     }
 
-    this.paymentsStatus.push(paymentStatus);
+    this.paymentsStatus.pop();
 
     return paymentStatus;
   }

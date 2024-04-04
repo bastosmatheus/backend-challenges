@@ -39,7 +39,7 @@ async function createTableCards() {
     CREATE TABLE IF NOT EXISTS cards (
       id SERIAL PRIMARY KEY,
       card_holder_name TEXT,
-      card_number TEXT UNIQUE,
+      card_number VARCHAR(16) UNIQUE,
       cvv CHAR(3),
       expiration_date DATE,
       created_at DATE DEFAULT NOW(),
