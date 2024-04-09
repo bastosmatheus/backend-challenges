@@ -28,6 +28,26 @@ class CardRepository implements ICardRepository {
     return card;
   }
 
+  public async getByBuyer(id_buyer: number): Promise<Card[] | ECardResponse.BuyerNotFound> {
+    const [buyerExists] = await sql<Buyer[]>/*sql*/ `
+      SELECT * FROM buyers
+      WHERE id = ${id_buyer}
+    `;
+
+    if (!buyerExists) {
+      return ECardResponse.BuyerNotFound;
+    }
+
+    const cards = await sql<Card[]>/*sql*/ `
+      SELECT card_holder_name, card_number, cvv, expiration_date, cards.created_at, buyer_name
+      FROM cards
+      INNER JOIN buyers ON cards.id_buyer = buyers.id
+      WHERE buyers.id = ${id_buyer}
+    `;
+
+    return cards;
+  }
+
   public async create(
     card_holder_name: string,
     card_number: string,
@@ -56,6 +76,8 @@ class CardRepository implements ICardRepository {
     const [card] = await sql<Card[]>/*sql*/ `
       INSERT INTO cards (card_holder_name, card_number, cvv, expiration_date, id_buyer)
       VALUES (${card_holder_name}, ${card_number}, ${cvv}, ${expiration_date}, ${id_buyer})
+
+      RETURNING *
     `;
 
     return card;
@@ -80,6 +102,8 @@ class CardRepository implements ICardRepository {
       UPDATE cards
       SET card_holder_name = ${card_holder_name}, cvv = ${cvv}, expiration_date = ${expiration_date}
       WHERE id = ${id}
+
+      RETURNING *
     `;
 
     return card;
@@ -98,6 +122,8 @@ class CardRepository implements ICardRepository {
     const [card] = await sql<Card[]>/*sql*/ `
       DELETE FROM cards
       WHERE id = ${id}
+
+      RETURNING *
     `;
 
     return card;

@@ -66,6 +66,8 @@ class PaymentStatusRepository implements IPaymentStatusRepository {
     const [paymentStatusDeleted] = await sql<PaymentStatus[]>/*sql*/ `
       DELETE FROM payments_status
       WHERE id = ${id}
+
+      RETURNING *
     `;
 
     return paymentStatusDeleted;

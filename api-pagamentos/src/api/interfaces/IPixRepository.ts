@@ -13,6 +13,7 @@ enum EPixResponse {
 interface IPixRepository {
   getAll(): Promise<Pix[]>;
   getById(id: number): Promise<Pix | EPixResponse.PixNotFound>;
+  getByBuyer(id_buyer: number): Promise<Pix[] | EPixResponse.BuyerNotFound>;
   create(
     code_generated: string,
     id_buyer: number

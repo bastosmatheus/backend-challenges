@@ -9,11 +9,11 @@ class CreateBuyerService {
   constructor(private buyerRepository: BuyerRepository) {}
 
   public async execute(
-    name: string,
+    buyer_name: string,
     cpf: string
   ): Promise<Either<ConflictError | BadRequestError, Buyer>> {
     const buyerSchema = z.object({
-      name: z
+      buyer_name: z
         .string({
           required_error: "Informe o nome do comprador",
           invalid_type_error: "O nome do comprador deve ser uma string",
@@ -27,7 +27,7 @@ class CreateBuyerService {
         .length(11, { message: "O CPF do comprador deve ter 11 dígitos" }),
     });
 
-    const buyerValidation = buyerSchema.safeParse({ name, cpf });
+    const buyerValidation = buyerSchema.safeParse({ buyer_name, cpf });
 
     if (!buyerValidation.success) {
       const buyerError = buyerValidation.error.errors[0];
@@ -35,7 +35,7 @@ class CreateBuyerService {
       return failure(new BadRequestError(buyerError.message));
     }
 
-    const buyer = await this.buyerRepository.create(name, cpf);
+    const buyer = await this.buyerRepository.create(buyer_name, cpf);
 
     if (buyer === EBuyerResponse.CPFAlreadyExists) {
       return failure(new ConflictError("Esse CPF já foi cadastrado"));

@@ -27,7 +27,10 @@ class InMemoryBuyerRepository implements IBuyerRepository {
     return buyer;
   }
 
-  public async create(name: string, cpf: string): Promise<Buyer | EBuyerResponse.CPFAlreadyExists> {
+  public async create(
+    buyer_name: string,
+    cpf: string
+  ): Promise<Buyer | EBuyerResponse.CPFAlreadyExists> {
     const cpfExists = this.buyers.find((buyer) => buyer.cpf === cpf);
 
     if (cpfExists) {
@@ -36,7 +39,7 @@ class InMemoryBuyerRepository implements IBuyerRepository {
 
     const buyer = {
       id: 1,
-      name,
+      buyer_name,
       cpf,
     };
 
@@ -45,14 +48,17 @@ class InMemoryBuyerRepository implements IBuyerRepository {
     return buyer;
   }
 
-  public async update(id: number, name: string): Promise<Buyer | EBuyerResponse.BuyerNotFound> {
+  public async update(
+    id: number,
+    buyer_name: string
+  ): Promise<Buyer | EBuyerResponse.BuyerNotFound> {
     const buyer = this.buyers.find((buyer) => buyer.id === id);
 
     if (!buyer) {
       return EBuyerResponse.BuyerNotFound;
     }
 
-    buyer.name = name;
+    buyer.buyer_name = buyer_name;
 
     return buyer;
   }

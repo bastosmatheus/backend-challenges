@@ -28,6 +28,26 @@ class PixRepository implements IPixRepository {
     return pix;
   }
 
+  public async getByBuyer(id_buyer: number): Promise<Pix[] | EPixResponse.BuyerNotFound> {
+    const [buyerExists] = await sql<Buyer[]>/*sql*/ `
+      SELECT * FROM buyers
+      WHERE id = ${id_buyer}
+    `;
+
+    if (!buyerExists) {
+      return EPixResponse.BuyerNotFound;
+    }
+
+    const pixs = await sql<Pix[]>/*sql*/ `
+      SELECT pixs.id, code_generated, buyer_name
+      FROM pixs
+      INNER JOIN buyers ON pixs.id_buyer = buyers.id
+      WHERE buyers.id = ${id_buyer}
+    `;
+
+    return pixs;
+  }
+
   public async create(
     code_generated: string,
     id_buyer: number
@@ -52,7 +72,9 @@ class PixRepository implements IPixRepository {
 
     const [pix] = await sql<Pix[]>/*sql*/ `
       INSERT INTO Pixs (code_generated, id_buyer)
-      VALUES (${code_generated}, ${id_buyer})
+      VALUES (${code_generated}, ${id_buyer})^
+
+      RETURNING *
     `;
 
     return pix;

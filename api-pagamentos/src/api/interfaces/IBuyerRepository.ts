@@ -1,6 +1,6 @@
 type Buyer = {
   id: number;
-  name: string;
+  buyer_name: string;
   cpf: string;
 };
 
@@ -13,8 +13,8 @@ interface IBuyerRepository {
   getAll(): Promise<Buyer[]>;
   getById(id: number): Promise<Buyer | EBuyerResponse.BuyerNotFound>;
   getByCpf(cpf: string): Promise<Buyer | EBuyerResponse.BuyerNotFound>;
-  create(name: string, cpf: string): Promise<Buyer | EBuyerResponse.CPFAlreadyExists>;
-  update(id: number, name: string): Promise<Buyer | EBuyerResponse.BuyerNotFound>;
+  create(buyer_name: string, cpf: string): Promise<Buyer | EBuyerResponse.CPFAlreadyExists>;
+  update(id: number, buyer_name: string): Promise<Buyer | EBuyerResponse.BuyerNotFound>;
   delete(id: number): Promise<Buyer | EBuyerResponse.BuyerNotFound>;
 }
 

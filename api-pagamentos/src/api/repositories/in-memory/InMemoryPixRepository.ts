@@ -25,6 +25,18 @@ class InMemoryPixRepository implements IPixRepository {
     return pix;
   }
 
+  public async getByBuyer(id_buyer: number): Promise<Pix[] | EPixResponse.BuyerNotFound> {
+    const buyer = this.buyers.find((buyer) => buyer.id === id_buyer);
+
+    if (!buyer) {
+      return EPixResponse.BuyerNotFound;
+    }
+
+    const pixsByBuyer = this.pixs.filter((pix) => pix.id_buyer == id_buyer);
+
+    return pixsByBuyer;
+  }
+
   public async create(
     code_generated: string,
     id_buyer: number

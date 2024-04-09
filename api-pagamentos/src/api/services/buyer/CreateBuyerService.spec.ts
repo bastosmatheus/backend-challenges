@@ -17,7 +17,7 @@ describe("create buyer", () => {
 
     expect(buyer.value).toEqual({
       id: 1,
-      name: "Matheus",
+      buyer_name: "Matheus",
       cpf: "12345678901",
     });
     expect(buyer).toBeInstanceOf(Success);

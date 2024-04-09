@@ -25,6 +25,18 @@ class InMemoryCardRepository implements ICardRepository {
     return card;
   }
 
+  public async getByBuyer(id_buyer: number): Promise<Card[] | ECardResponse.BuyerNotFound> {
+    const buyer = this.buyers.find((buyer) => buyer.id === id_buyer);
+
+    if (!buyer) {
+      return ECardResponse.BuyerNotFound;
+    }
+
+    const cardsByBuyer = this.cards.filter((card) => card.id_buyer == id_buyer);
+
+    return cardsByBuyer;
+  }
+
   public async create(
     card_holder_name: string,
     card_number: string,

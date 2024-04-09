@@ -36,7 +36,10 @@ class BuyerRepository implements IBuyerRepository {
     return buyer;
   }
 
-  public async create(name: string, cpf: string): Promise<Buyer | EBuyerResponse.CPFAlreadyExists> {
+  public async create(
+    buyer_name: string,
+    cpf: string
+  ): Promise<Buyer | EBuyerResponse.CPFAlreadyExists> {
     const [cpfExists] = await sql<Buyer[]>/*sql*/ `
       SELECT * FROM buyers
       WHERE cpf = ${cpf}
@@ -47,8 +50,8 @@ class BuyerRepository implements IBuyerRepository {
     }
 
     const [buyer] = await sql<Buyer[]>/*sql*/ `
-      INSERT INTO buyers (name, cpf)
-      VALUES (${name}, ${cpf})
+      INSERT INTO buyers (buyer_name, cpf)
+      VALUES (${buyer_name}, ${cpf})
 
       RETURNING *
     `;
@@ -56,7 +59,10 @@ class BuyerRepository implements IBuyerRepository {
     return buyer;
   }
 
-  public async update(id: number, name: string): Promise<Buyer | EBuyerResponse.BuyerNotFound> {
+  public async update(
+    id: number,
+    buyer_name: string
+  ): Promise<Buyer | EBuyerResponse.BuyerNotFound> {
     const [buyer] = await sql<Buyer[]>/*sql*/ `
       SELECT * FROM buyers
       WHERE id = ${id}
@@ -68,8 +74,10 @@ class BuyerRepository implements IBuyerRepository {
 
     const [buyerUpdated] = await sql<Buyer[]>/*sql*/ `
       UPDATE buyers
-      SET name = ${name}
+      SET buyer_name = ${buyer_name}
       WHERE id = ${id}
+
+      RETURNING *
     `;
 
     return buyerUpdated;
@@ -88,6 +96,8 @@ class BuyerRepository implements IBuyerRepository {
     const [buyerDeleted] = await sql<Buyer[]>/*sql*/ `
       DELETE FROM buyers
       WHERE id = ${id}
+
+      RETURNING *
     `;
 
     return buyerDeleted;

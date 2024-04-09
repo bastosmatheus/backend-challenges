@@ -16,6 +16,7 @@ enum ECardResponse {
 interface ICardRepository {
   getAll(): Promise<Card[]>;
   getById(id: number): Promise<Card | ECardResponse.CardNotFound>;
+  getByBuyer(id_buyer: number): Promise<Card[] | ECardResponse.BuyerNotFound>;
   create(
     card_holder_name: string,
     card_number: string,

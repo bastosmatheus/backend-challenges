@@ -22,7 +22,7 @@ describe("update buyer", () => {
 
     expect(buyer.value).toStrictEqual({
       id: 1,
-      name: "Lucio",
+      buyer_name: "Lucio",
       cpf: "12345678901",
     });
     expect(buyer).toBeInstanceOf(Success);

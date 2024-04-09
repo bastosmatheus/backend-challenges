@@ -10,7 +10,7 @@ class UpdateBuyerService {
 
   public async execute(
     id: number,
-    name: string
+    buyer_name: string
   ): Promise<Either<NotFoundError | BadRequestError, Buyer>> {
     const buyerSchema = z.object({
       id: z
@@ -19,7 +19,7 @@ class UpdateBuyerService {
           invalid_type_error: "O ID deve ser um número",
         })
         .min(1, { message: "O ID não pode ser menor que 1" }),
-      name: z
+      buyer_name: z
         .string({
           required_error: "Informe o nome do comprador",
           invalid_type_error: "O nome do comprador deve ser uma string",
@@ -27,7 +27,7 @@ class UpdateBuyerService {
         .min(2, { message: "O nome do comprador deve ter pelo menos 2 caracteres" }),
     });
 
-    const buyerValidation = buyerSchema.safeParse({ id, name });
+    const buyerValidation = buyerSchema.safeParse({ id, buyer_name });
 
     if (!buyerValidation.success) {
       const buyerError = buyerValidation.error.errors[0];
@@ -35,7 +35,7 @@ class UpdateBuyerService {
       return failure(new BadRequestError(buyerError.message));
     }
 
-    const buyer = await this.buyerRepository.update(id, name);
+    const buyer = await this.buyerRepository.update(id, buyer_name);
 
     if (buyer === EBuyerResponse.BuyerNotFound) {
       return failure(new NotFoundError("Nenhum comprador foi encontrado com o ID: " + id));
