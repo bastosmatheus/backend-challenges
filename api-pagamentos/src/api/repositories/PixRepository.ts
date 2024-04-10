@@ -7,7 +7,7 @@ class PixRepository implements IPixRepository {
     const pixs = await sql<Pix[]>/*sql*/ `
       SELECT pixs.id, code_generated, buyer_name 
       FROM pixs
-      INNER JOIN buyers on pix.id_buyer = buyers.id
+      INNER JOIN buyers on pixs.id_buyer = buyers.id
     `;
 
     return pixs;
