@@ -71,8 +71,8 @@ class PixRepository implements IPixRepository {
     }
 
     const [pix] = await sql<Pix[]>/*sql*/ `
-      INSERT INTO Pixs (code_generated, id_buyer)
-      VALUES (${code_generated}, ${id_buyer})^
+      INSERT INTO pixs (code_generated, id_buyer)
+      VALUES (${code_generated}, ${id_buyer})
 
       RETURNING *
     `;

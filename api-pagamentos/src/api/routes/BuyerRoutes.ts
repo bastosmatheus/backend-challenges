@@ -39,7 +39,7 @@ class BuyerRoutes {
 
     this.router.get("/buyers", getAllBuyersController.execute);
     this.router.get("/buyers/:id", getBuyerByIdController.execute);
-    this.router.get("/buyers/:cpf", getBuyerByCpfController.execute);
+    this.router.get("/buyers/cpf/:cpf", getBuyerByCpfController.execute);
     this.router.post("/buyers", createBuyerController.execute);
     this.router.put("/buyers/:id", updateBuyerController.execute);
     this.router.delete("/buyers/:id", deleteBuyerController.execute);

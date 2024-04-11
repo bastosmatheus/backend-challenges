@@ -13,6 +13,8 @@ enum EPaymentInfosResponse {
   BuyerNotFound,
   CardNotFound,
   PixNotFound,
+  NoLinkWithCardOrPix,
+  ReferenceOnlyForOneCardOrPix,
 }
 
 interface IPaymentInfosRepository {
@@ -38,6 +40,8 @@ interface IPaymentInfosRepository {
     | EPaymentInfosResponse.BuyerNotFound
     | EPaymentInfosResponse.CardNotFound
     | EPaymentInfosResponse.PixNotFound
+    | EPaymentInfosResponse.NoLinkWithCardOrPix
+    | EPaymentInfosResponse.ReferenceOnlyForOneCardOrPix
   >;
   update(
     id: number,

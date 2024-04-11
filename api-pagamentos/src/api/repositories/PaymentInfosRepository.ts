@@ -16,8 +16,8 @@ class PaymentInfosRepository implements IPaymentInfosRepository {
       FROM payments_infos
       INNER JOIN payments_status ON payments_infos.id_status = payments_status.id
       INNER JOIN buyers ON payments_infos.id_buyer = buyers.id
-      INNER JOIN cards ON payments_infos.id_card = cards.id
-      INNER JOIN pixs ON payments_infos.id_pix = pixs.id
+      LEFT JOIN cards ON payments_infos.id_card = cards.id
+      LEFT JOIN pixs ON payments_infos.id_pix = pixs.id
     `;
 
     return paymentsInfos;
@@ -57,8 +57,8 @@ class PaymentInfosRepository implements IPaymentInfosRepository {
       FROM payments_infos
       INNER JOIN payments_status ON payments_infos.id_status = payments_status.id
       INNER JOIN buyers ON payments_infos.id_buyer = buyers.id
-      INNER JOIN cards ON payments_infos.id_card = cards.id
-      INNER JOIN pixs ON payments_infos.id_pix = pixs.id
+      LEFT JOIN cards ON payments_infos.id_card = cards.id
+      LEFT JOIN pixs ON payments_infos.id_pix = pixs.id
       WHERE payments_infos.id = ${id}
     `;
 
@@ -86,9 +86,9 @@ class PaymentInfosRepository implements IPaymentInfosRepository {
       FROM payments_infos
       INNER JOIN payments_status ON payments_infos.id_status = payments_status.id
       INNER JOIN buyers ON payments_infos.id_buyer = buyers.id
-      INNER JOIN cards ON payments_infos.id_card = cards.id
-      INNER JOIN pixs ON payments_infos.id_pix = pixs.id
-      WHERE payments_status.id_status = ${id_status}
+      LEFT JOIN cards ON payments_infos.id_card = cards.id
+      LEFT JOIN pixs ON payments_infos.id_pix = pixs.id
+      WHERE payments_status.id = ${id_status}
     `;
 
     return paymentInfos;
@@ -111,9 +111,9 @@ class PaymentInfosRepository implements IPaymentInfosRepository {
       FROM payments_infos
       INNER JOIN payments_status ON payments_infos.id_status = payments_status.id
       INNER JOIN buyers ON payments_infos.id_buyer = buyers.id
-      INNER JOIN cards ON payments_infos.id_card = cards.id
-      INNER JOIN pixs ON payments_infos.id_pix = pixs.id
-      WHERE payments_status.id_buyer = ${id_buyer}
+      LEFT JOIN cards ON payments_infos.id_card = cards.id
+      LEFT JOIN pixs ON payments_infos.id_pix = pixs.id
+      WHERE buyers.id = ${id_buyer}
     `;
 
     return paymentInfos;
@@ -137,7 +137,7 @@ class PaymentInfosRepository implements IPaymentInfosRepository {
       INNER JOIN payments_status ON payments_infos.id_status = payments_status.id
       INNER JOIN buyers ON payments_infos.id_buyer = buyers.id
       INNER JOIN cards ON payments_infos.id_card = cards.id
-      WHERE payments_status.id_card = ${id_card}
+      WHERE cards.id = ${id_card}
     `;
 
     return paymentInfos;
@@ -161,7 +161,7 @@ class PaymentInfosRepository implements IPaymentInfosRepository {
       INNER JOIN payments_status ON payments_infos.id_status = payments_status.id
       INNER JOIN buyers ON payments_infos.id_buyer = buyers.id
       INNER JOIN pixs ON payments_infos.id_pix = pixs.id
-      WHERE payments_status.id_pix = ${id_pix}
+      WHERE pixs.id = ${id_pix}
     `;
 
     return paymentInfos;
@@ -179,6 +179,8 @@ class PaymentInfosRepository implements IPaymentInfosRepository {
     | EPaymentInfosResponse.BuyerNotFound
     | EPaymentInfosResponse.CardNotFound
     | EPaymentInfosResponse.PixNotFound
+    | EPaymentInfosResponse.NoLinkWithCardOrPix
+    | EPaymentInfosResponse.ReferenceOnlyForOneCardOrPix
   > {
     const [statusExists] = await sql<PaymentStatus[]>/*sql*/ `
       SELECT * FROM payments_status
@@ -198,27 +200,33 @@ class PaymentInfosRepository implements IPaymentInfosRepository {
       return EPaymentInfosResponse.BuyerNotFound;
     }
 
-    const [cardExists] = await sql<Card[]>/*sql*/ `
-      SELECT * FROM cards
-      WHERE id IS NOT NULL AND id = ${id_card}
-    `;
+    if (id_card === null && id_pix === null) {
+      return EPaymentInfosResponse.NoLinkWithCardOrPix;
+    } else if (id_card !== null && id_pix !== null) {
+      return EPaymentInfosResponse.ReferenceOnlyForOneCardOrPix;
+    } else if (id_card !== null) {
+      const [cardExists] = await sql<Card[]>/*sql*/ `
+        SELECT * FROM cards
+        WHERE id = ${id_card}
+      `;
 
-    if (!cardExists) {
-      return EPaymentInfosResponse.CardNotFound;
-    }
+      if (!cardExists) {
+        return EPaymentInfosResponse.CardNotFound;
+      }
+    } else {
+      const [pixExists] = await sql<Pix[]>/*sql*/ `
+        SELECT * FROM pixs
+        WHERE id = ${id_pix}
+      `;
 
-    const [pixExists] = await sql<Pix[]>/*sql*/ `
-      SELECT * FROM pixs
-      WHERE id IS NOT NULL AND id = ${id_pix}
-    `;
-
-    if (!pixExists) {
-      return EPaymentInfosResponse.PixNotFound;
+      if (!pixExists) {
+        return EPaymentInfosResponse.PixNotFound;
+      }
     }
 
     const [paymentInfos] = await sql<PaymentInfos[]>/*sql*/ `
       INSERT INTO payments_infos (price, id_status, id_buyer, id_card, id_pix)
-      VALUES (${price}, ${id_status}, ${id_buyer}, ${id_card}, ${id_pix});
+      VALUES (${price}, ${id_status}, ${id_buyer}, ${id_card}, ${id_pix})
 
       RETURNING *
     `;

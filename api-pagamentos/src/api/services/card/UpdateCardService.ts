@@ -33,7 +33,7 @@ class UpdateCardService {
           invalid_type_error: "O CVV do cartão deve ser uma string",
         })
         .length(3, { message: "O CVV deve ter 3 dígitos" }),
-      expiration_date: z.date({
+      expiration_date: z.coerce.date({
         required_error: "Informe a data de expiração do cartão",
         invalid_type_error: "A data de expiração do cartão deve ser uma data",
       }),

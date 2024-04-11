@@ -4,7 +4,7 @@ import { GetPaymentsInfosByBuyerService } from "../../services/payment_infos/Get
 
 class GetPaymentsInfosByBuyerController {
   public async execute(req: Request, res: Response) {
-    const { id_buyer } = req.query;
+    const { id_buyer } = req.params;
 
     const paymentInfosRepository = new PaymentInfosRepository();
 

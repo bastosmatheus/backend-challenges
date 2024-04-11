@@ -36,16 +36,16 @@ class CreateCardService {
           invalid_type_error: "O CVV do cartão deve ser uma string",
         })
         .length(3, { message: "O CVV deve ter 3 dígitos" }),
-      expiration_date: z.date({
+      expiration_date: z.coerce.date({
         required_error: "Informe a data de expiração do cartão",
         invalid_type_error: "A data de expiração do cartão deve ser uma data",
       }),
       id_buyer: z
         .number({
-          required_error: "O ID é obrigatório",
-          invalid_type_error: "O ID deve ser um número",
+          required_error: "O ID do comprador é obrigatório",
+          invalid_type_error: "O ID do comprador deve ser um número",
         })
-        .min(1, { message: "O ID não pode ser menor que 1" }),
+        .min(1, { message: "O ID do comprador não pode ser menor que 1" }),
     });
 
     const cardValidation = cardSchema.safeParse({

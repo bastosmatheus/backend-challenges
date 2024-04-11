@@ -4,7 +4,7 @@ import { GetPaymentsInfosByCardService } from "../../services/payment_infos/GetP
 
 class GetPaymentsInfosByCardController {
   public async execute(req: Request, res: Response) {
-    const { id_card } = req.query;
+    const { id_card } = req.params;
 
     const paymentInfosRepository = new PaymentInfosRepository();
 

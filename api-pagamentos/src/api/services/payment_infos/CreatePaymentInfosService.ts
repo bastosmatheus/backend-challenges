@@ -100,6 +100,18 @@ class CreatePaymentInfosService {
       return failure(new NotFoundError("Nenhum pix foi encontrado com o ID: " + id_pix));
     }
 
+    if (paymentInfos === EPaymentInfosResponse.NoLinkWithCardOrPix) {
+      return failure(
+        new BadRequestError(
+          "Pix ou cartão devem ser referenciados, não há a possibilidade de os dois serem nulos"
+        )
+      );
+    }
+
+    if (paymentInfos === EPaymentInfosResponse.ReferenceOnlyForOneCardOrPix) {
+      return failure(new BadRequestError("A referencia só é valida para um: ou cartão ou pix"));
+    }
+
     return success(paymentInfos);
   }
 }

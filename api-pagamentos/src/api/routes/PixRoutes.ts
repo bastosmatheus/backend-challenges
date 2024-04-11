@@ -30,7 +30,7 @@ class PixRoutes {
     } = await this.controllers();
 
     this.router.get("/pixs", getAllPixsController.execute);
-    this.router.get("/pixs", getPixsByBuyerController.execute);
+    this.router.get("/pixs/buyer/:id_buyer", getPixsByBuyerController.execute);
     this.router.get("/pixs/:id", getPixByIdController.execute);
     this.router.post("/pixs", createPixController.execute);
 

@@ -58,12 +58,12 @@ class PaymentInfosRoutes {
     } = await this.controllers();
 
     this.router.get("/paymentsinfos", getAllPaymentsInfosController.execute);
-    this.router.get("/paymentsinfos/pix", getAllPaymentsInfosByPixsController.execute);
-    this.router.get("/paymentsinfos/card", getAllPaymentsInfosByCardsController.execute);
-    this.router.get("/paymentsinfos", getPaymentsInfosByStatusController.execute);
-    this.router.get("/paymentsinfos", getPaymentsInfosByBuyerController.execute);
-    this.router.get("/paymentsinfos", getPaymentsInfosByCardController.execute);
-    this.router.get("/paymentsinfos", getPaymentsInfosByPixController.execute);
+    this.router.get("/paymentsinfos/pixs", getAllPaymentsInfosByPixsController.execute);
+    this.router.get("/paymentsinfos/cards", getAllPaymentsInfosByCardsController.execute);
+    this.router.get("/paymentsinfos/status/:id_status", getPaymentsInfosByStatusController.execute);
+    this.router.get("/paymentsinfos/buyer/:id_buyer", getPaymentsInfosByBuyerController.execute);
+    this.router.get("/paymentsinfos/card/:id_card", getPaymentsInfosByCardController.execute);
+    this.router.get("/paymentsinfos/pix/:id_pix", getPaymentsInfosByPixController.execute);
     this.router.get("/paymentsinfos/:id", getPaymentInfosByIdController.execute);
     this.router.post("/paymentsinfos", createPaymentInfosController.execute);
     this.router.put("/paymentsinfos/:id", updatePaymentInfosController.execute);

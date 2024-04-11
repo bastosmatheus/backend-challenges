@@ -4,7 +4,7 @@ import { GetPaymentsInfosByPixService } from "../../services/payment_infos/GetPa
 
 class GetPaymentsInfosByPixController {
   public async execute(req: Request, res: Response) {
-    const { id_pix } = req.query;
+    const { id_pix } = req.params;
 
     const paymentInfosRepository = new PaymentInfosRepository();
 

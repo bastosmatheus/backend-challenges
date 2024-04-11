@@ -38,7 +38,7 @@ class CardRoutes {
     } = await this.controllers();
 
     this.router.get("/cards", getAllCardsController.execute);
-    this.router.get("/cards", getCardsByBuyerController.execute);
+    this.router.get("/cards/buyer/:id_buyer", getCardsByBuyerController.execute);
     this.router.get("/cards/:id", getCardByIdController.execute);
     this.router.post("/cards", createCardController.execute);
     this.router.put("/cards/:id", updateCardController.execute);

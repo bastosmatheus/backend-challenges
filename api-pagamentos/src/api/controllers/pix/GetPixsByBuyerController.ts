@@ -4,7 +4,7 @@ import { GetPixsByBuyerService } from "../../services/pix/GetPixsByBuyerService"
 
 class GetPixsByBuyerController {
   public async execute(req: Request, res: Response) {
-    const { id_buyer } = req.query;
+    const { id_buyer } = req.params;
 
     const pixRepository = new PixRepository();
 

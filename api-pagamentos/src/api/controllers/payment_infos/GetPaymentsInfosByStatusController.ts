@@ -4,7 +4,7 @@ import { GetPaymentsInfosByStatusService } from "../../services/payment_infos/Ge
 
 class GetPaymentsInfosByStatusController {
   public async execute(req: Request, res: Response) {
-    const { id_status } = req.query;
+    const { id_status } = req.params;
 
     const paymentInfosRepository = new PaymentInfosRepository();
 
