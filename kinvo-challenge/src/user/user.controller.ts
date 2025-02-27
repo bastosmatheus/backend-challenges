@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Patch, Post, Query } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Get,
+  Patch,
+  Post,
+  Query,
+  UseGuards,
+} from "@nestjs/common";
 import { CreateUserService } from "./services/create-user.service";
 import { GetUserByIdService } from "./services/get-user-by-id.service";
 import { GetUserByEmailService } from "./services/get-user-by-email.service";
@@ -8,6 +16,7 @@ import { GetUserByIdDto } from "./dto/find-user-by-id.dto";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateMoneyDto } from "./dto/update-money.dto";
 import { IsNumberParam } from "src/pipes/is-number-param.pipe";
+import { JwtAuthGuard } from "src/auth/jwt-auth.guard";
 
 @Controller("users")
 export class UserController {
@@ -66,6 +75,7 @@ export class UserController {
   }
 
   @Patch(":id/money")
+  @UseGuards(JwtAuthGuard)
   public async updateMoney(
     @IsNumberParam("id") id: number,
     @Body() updateMoneyDto: UpdateMoneyDto
