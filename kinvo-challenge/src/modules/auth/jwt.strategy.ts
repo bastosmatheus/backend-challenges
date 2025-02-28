@@ -2,7 +2,7 @@ import { Strategy } from "passport-jwt";
 import { PassportStrategy } from "@nestjs/passport";
 import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { ExtractJwt } from "passport-jwt";
-import { UserDatabaseRepository } from "src/user/user.repository";
+import { UserDatabaseRepository } from "src/modules/user/user.repository";
 
 type PayloadToken = {
   id: number;

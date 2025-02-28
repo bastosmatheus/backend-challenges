@@ -16,7 +16,7 @@ import { GetUserByIdDto } from "./dto/find-user-by-id.dto";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateMoneyDto } from "./dto/update-money.dto";
 import { IsNumberParam } from "src/pipes/is-number-param.pipe";
-import { JwtAuthGuard } from "src/auth/jwt-auth.guard";
+import { JwtAuthGuard } from "src/modules/auth/jwt-auth.guard";
 
 @Controller("users")
 export class UserController {
