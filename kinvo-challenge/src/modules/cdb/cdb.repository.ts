@@ -2,8 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Cdb } from "./entities/cdb.entity";
 import { Repository } from "typeorm";
-import { CdbRepository } from "./cdb.interface";
-import { CreateCdbDto } from "./dto/create-cdb.dto";
+import { CdbRepository, CreateCdb } from "./cdb.interface";
 
 @Injectable()
 class CdbDatabaseRepository implements CdbRepository {
@@ -20,7 +19,7 @@ class CdbDatabaseRepository implements CdbRepository {
     return cdb;
   }
 
-  public async create(cdb: CreateCdbDto): Promise<Cdb> {
+  public async create(cdb: CreateCdb): Promise<Cdb> {
     const cdbCreated = this.cdbRepository.create(cdb);
 
     const cdbSaved = await this.cdbRepository.save(cdbCreated);
@@ -28,7 +27,7 @@ class CdbDatabaseRepository implements CdbRepository {
     return cdbSaved;
   }
 
-  public async updateName(cdb: Cdb): Promise<Cdb> {
+  public async update(cdb: Cdb): Promise<Cdb> {
     const cdbUpdated = await this.cdbRepository.save(cdb);
 
     return cdbUpdated;

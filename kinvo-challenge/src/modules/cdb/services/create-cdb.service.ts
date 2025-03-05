@@ -30,6 +30,7 @@ class CreateCdbService {
       name,
       amount_initial,
       user_id,
+      total: amount_initial,
     });
 
     return cdb;

@@ -19,7 +19,7 @@ class UpdateCdbNameService {
 
     cdbExists.name = name;
 
-    const cdb = await this.cbdDatabaseRepository.updateName(cdbExists);
+    const cdb = await this.cbdDatabaseRepository.update(cdbExists);
 
     return cdb;
   }
