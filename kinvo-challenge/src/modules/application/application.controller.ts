@@ -1,34 +1,70 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { ApplicationsService } from './applications.service';
-import { CreateApplicationDto } from './dto/create-application.dto';
-import { UpdateApplicationDto } from './dto/update-application.dto';
+import { Controller, Get, Post, Body } from "@nestjs/common";
+import { CreateApplicationDto } from "./dto/create-application.dto";
+import { CreateApplicationService } from "./services/create-application.service";
+import { GetAllApplicationsByCdbService } from "./services/get-all-applications-by-cdb.service";
+import { GetApplicationByIdService } from "./services/get-application-by-id.service";
+import { IsNumberParam } from "src/pipes/is-number-param.pipe";
+import { GetApplicationByIdDto } from "./dto/get-application-by-id.dto";
+import { GetAllApplicationsByCdbDto } from "./dto/get-all-applications-by-cdb.dto";
 
-@Controller('applications')
-export class ApplicationsController {
-  constructor(private readonly applicationsService: ApplicationsService) {}
+@Controller("applications")
+class ApplicationsController {
+  constructor(
+    private readonly createApplicationService: CreateApplicationService,
+    private readonly getAllApplicationsByCdbService: GetAllApplicationsByCdbService,
+    private readonly getApplicationByIdService: GetApplicationByIdService
+  ) {}
+
+  @Get("/cdb/:cdb_id")
+  public async getAllApplicationsByCdb(
+    @IsNumberParam("cdb_id")
+    getAllApplicationsByCdbDto: GetAllApplicationsByCdbDto
+  ) {
+    try {
+      const { cdb_id } = getAllApplicationsByCdbDto;
+
+      const application = await this.getAllApplicationsByCdbService.execute({
+        cdb_id,
+      });
+
+      return application;
+    } catch (error: unknown) {
+      console.log(error);
+    }
+  }
+
+  @Get(":id")
+  public async getById(
+    @IsNumberParam("id") getApplicationByIdDto: GetApplicationByIdDto
+  ) {
+    try {
+      const { id } = getApplicationByIdDto;
+
+      const application = await this.getApplicationByIdService.execute({
+        id,
+      });
+
+      return application;
+    } catch (error: unknown) {
+      console.log(error);
+    }
+  }
 
   @Post()
-  create(@Body() createApplicationDto: CreateApplicationDto) {
-    return this.applicationsService.create(createApplicationDto);
-  }
+  public async create(@Body() createApplicationDto: CreateApplicationDto) {
+    try {
+      const { amount, cdb_id } = createApplicationDto;
 
-  @Get()
-  findAll() {
-    return this.applicationsService.findAll();
-  }
+      const application = await this.createApplicationService.execute({
+        amount,
+        cdb_id,
+      });
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.applicationsService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateApplicationDto: UpdateApplicationDto) {
-    return this.applicationsService.update(+id, updateApplicationDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.applicationsService.remove(+id);
+      return application;
+    } catch (error: unknown) {
+      console.log(error);
+    }
   }
 }
+
+export { ApplicationsController };
