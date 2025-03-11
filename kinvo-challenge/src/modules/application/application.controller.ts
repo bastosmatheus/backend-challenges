@@ -8,7 +8,7 @@ import { GetApplicationByIdDto } from "./dto/get-application-by-id.dto";
 import { GetAllApplicationsByCdbDto } from "./dto/get-all-applications-by-cdb.dto";
 
 @Controller("applications")
-class ApplicationsController {
+class ApplicationController {
   constructor(
     private readonly createApplicationService: CreateApplicationService,
     private readonly getAllApplicationsByCdbService: GetAllApplicationsByCdbService,
@@ -67,4 +67,4 @@ class ApplicationsController {
   }
 }
 
-export { ApplicationsController };
+export { ApplicationController };
