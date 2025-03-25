@@ -17,18 +17,14 @@ class RedemptionController {
 
   @Post()
   public async create(@Body() createRedemptionDto: CreateRedemptionDto) {
-    try {
-      const { amount, cdb_id } = createRedemptionDto;
+    const { amount, cdb_id } = createRedemptionDto;
 
-      const redemption = await this.createRedemptionService.execute({
-        amount,
-        cdb_id,
-      });
+    const redemption = await this.createRedemptionService.execute({
+      amount,
+      cdb_id,
+    });
 
-      return redemption;
-    } catch (error: unknown) {
-      console.log(error);
-    }
+    return redemption;
   }
 
   @Get("/cdb/:cdb_id")
@@ -36,34 +32,26 @@ class RedemptionController {
     @IsNumberParam("cdb_id")
     getAllRedemptionsByCdbDto: GetAllRedemptionsByCdbDto
   ) {
-    try {
-      const { cdb_id } = getAllRedemptionsByCdbDto;
+    const { cdb_id } = getAllRedemptionsByCdbDto;
 
-      const redemption = await this.getAllRedemptionsByCdbService.execute({
-        cdb_id,
-      });
+    const redemption = await this.getAllRedemptionsByCdbService.execute({
+      cdb_id,
+    });
 
-      return redemption;
-    } catch (error: unknown) {
-      console.log(error);
-    }
+    return redemption;
   }
 
   @Get(":id")
   public async getById(
     @IsNumberParam("id") getRedemptionByIdDto: GetRedemptionByIdDto
   ) {
-    try {
-      const { id } = getRedemptionByIdDto;
+    const { id } = getRedemptionByIdDto;
 
-      const redemption = await this.getRedemptionByIdService.execute({
-        id,
-      });
+    const redemption = await this.getRedemptionByIdService.execute({
+      id,
+    });
 
-      return redemption;
-    } catch (error: unknown) {
-      console.log(error);
-    }
+    return redemption;
   }
 }
 

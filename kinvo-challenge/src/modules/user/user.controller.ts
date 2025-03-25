@@ -6,6 +6,8 @@ import {
   Post,
   Query,
   UseGuards,
+  UsePipes,
+  ValidationPipe,
 } from "@nestjs/common";
 import { CreateUserService } from "./services/create-user.service";
 import { GetUserByIdService } from "./services/get-user-by-id.service";
@@ -31,47 +33,35 @@ export class UserController {
   public async getUserByEmail(
     @Query("email") getUserByEmailDto: GetUserByEmailDto
   ) {
-    try {
-      const { email } = getUserByEmailDto;
+    const { email } = getUserByEmailDto;
 
-      const user = await this.getUserByEmailService.execute({ email });
+    const user = await this.getUserByEmailService.execute({ email });
 
-      return user;
-    } catch (error: unknown) {
-      console.log(error);
-    }
+    return user;
   }
 
   @Get(":id")
   public async getUserById(
     @IsNumberParam("id") getUserByIdDto: GetUserByIdDto
   ) {
-    try {
-      const { id } = getUserByIdDto;
+    const { id } = getUserByIdDto;
 
-      const user = await this.getUserByIdService.execute({ id });
+    const user = await this.getUserByIdService.execute({ id });
 
-      return user;
-    } catch (error: unknown) {
-      console.log(error);
-    }
+    return user;
   }
 
   @Post()
   public async createUser(@Body() createUserDto: CreateUserDto) {
-    try {
-      const { name, email, password } = createUserDto;
+    const { name, email, password } = createUserDto;
 
-      const user = await this.createUserService.execute({
-        name,
-        email,
-        password,
-      });
+    const user = await this.createUserService.execute({
+      name,
+      email,
+      password,
+    });
 
-      return user;
-    } catch (error: unknown) {
-      console.log(error);
-    }
+    return user;
   }
 
   @Patch(":id/money")
@@ -80,17 +70,13 @@ export class UserController {
     @IsNumberParam("id") id: number,
     @Body() updateMoneyDto: UpdateMoneyDto
   ) {
-    try {
-      const { amount } = updateMoneyDto;
+    const { amount } = updateMoneyDto;
 
-      const user = await this.updateMoneyService.execute({
-        id,
-        amount,
-      });
+    const user = await this.updateMoneyService.execute({
+      id,
+      amount,
+    });
 
-      return user;
-    } catch (error: unknown) {
-      console.log(error);
-    }
+    return user;
   }
 }

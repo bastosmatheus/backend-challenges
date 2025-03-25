@@ -25,32 +25,24 @@ class CdbController {
 
   @Get(":id")
   public async getCdbById(@IsNumberParam("id") getCdbByIdDto: GetCdbByIdDto) {
-    try {
-      const { id } = getCdbByIdDto;
+    const { id } = getCdbByIdDto;
 
-      const cdb = await this.getCdbByIdService.execute({ id });
+    const cdb = await this.getCdbByIdService.execute({ id });
 
-      return cdb;
-    } catch (error: unknown) {
-      console.log(error);
-    }
+    return cdb;
   }
 
   @Post()
   public async createCdb(@Body() createCdbDto: CreateCdbDto) {
-    try {
-      const { name, amount_initial, user_id } = createCdbDto;
+    const { name, amount_initial, user_id } = createCdbDto;
 
-      const cdb = await this.createCdbService.execute({
-        name,
-        amount_initial,
-        user_id,
-      });
+    const cdb = await this.createCdbService.execute({
+      name,
+      amount_initial,
+      user_id,
+    });
 
-      return cdb;
-    } catch (error: unknown) {
-      console.log(error);
-    }
+    return cdb;
   }
 
   @Patch(":id")
@@ -58,15 +50,11 @@ class CdbController {
     @IsNumberParam("id") id: number,
     @Body() updateCdbNameDto: UpdateCdbNameDto
   ) {
-    try {
-      const { name } = updateCdbNameDto;
+    const { name } = updateCdbNameDto;
 
-      const cdb = await this.updateCdbNameService.execute({ id, name });
+    const cdb = await this.updateCdbNameService.execute({ id, name });
 
-      return cdb;
-    } catch (error: unknown) {
-      console.log(error);
-    }
+    return cdb;
   }
 }
 

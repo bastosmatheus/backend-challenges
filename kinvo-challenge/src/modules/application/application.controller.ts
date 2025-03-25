@@ -20,50 +20,38 @@ class ApplicationController {
     @IsNumberParam("cdb_id")
     getAllApplicationsByCdbDto: GetAllApplicationsByCdbDto
   ) {
-    try {
-      const { cdb_id } = getAllApplicationsByCdbDto;
+    const { cdb_id } = getAllApplicationsByCdbDto;
 
-      const application = await this.getAllApplicationsByCdbService.execute({
-        cdb_id,
-      });
+    const application = await this.getAllApplicationsByCdbService.execute({
+      cdb_id,
+    });
 
-      return application;
-    } catch (error: unknown) {
-      console.log(error);
-    }
+    return application;
   }
 
   @Get(":id")
   public async getById(
     @IsNumberParam("id") getApplicationByIdDto: GetApplicationByIdDto
   ) {
-    try {
-      const { id } = getApplicationByIdDto;
+    const { id } = getApplicationByIdDto;
 
-      const application = await this.getApplicationByIdService.execute({
-        id,
-      });
+    const application = await this.getApplicationByIdService.execute({
+      id,
+    });
 
-      return application;
-    } catch (error: unknown) {
-      console.log(error);
-    }
+    return application;
   }
 
   @Post()
   public async create(@Body() createApplicationDto: CreateApplicationDto) {
-    try {
-      const { amount, cdb_id } = createApplicationDto;
+    const { amount, cdb_id } = createApplicationDto;
 
-      const application = await this.createApplicationService.execute({
-        amount,
-        cdb_id,
-      });
+    const application = await this.createApplicationService.execute({
+      amount,
+      cdb_id,
+    });
 
-      return application;
-    } catch (error: unknown) {
-      console.log(error);
-    }
+    return application;
   }
 }
 
