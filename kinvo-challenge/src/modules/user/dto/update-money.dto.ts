@@ -1,8 +1,14 @@
+import { ApiProperty } from "@nestjs/swagger";
 import { IsDecimal, Min } from "class-validator";
 
 class UpdateMoneyDto {
-  @IsDecimal({}, { message: "Informe uma quantia válida de dinheiro" })
-  @Min(1, { message: "Informe uma quantia válida - mínimo 1 real" })
+  @ApiProperty({
+    description: "O valor que vai depositar na conta",
+    example: 200.75,
+    required: true,
+  })
+  @IsDecimal({}, { message: "O valor do depósito deve ser um número (200.00)" })
+  @Min(1, { message: "Valor minimo de 1 real para depositar na conta" })
   amount: number;
 }
 
