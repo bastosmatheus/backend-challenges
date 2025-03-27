@@ -26,7 +26,7 @@ class User {
   money: number;
 
   @OneToMany(() => Cdb, (cdb) => cdb.user_id)
-  cbds: Cdb[];
+  cdbs: Cdb[];
 
   @CreateDateColumn()
   created_at: Date;

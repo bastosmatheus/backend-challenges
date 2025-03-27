@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from "@nestjs/common";
 import { UserDatabaseRepository } from "src/modules/user/user.repository";
 import { CdbDatabaseRepository } from "../cdb.repository";
 
@@ -24,6 +28,12 @@ class CreateCdbService {
 
     if (!userExists) {
       throw new NotFoundException("Nenhum usuário encontrado");
+    }
+
+    const isNotPossibleDeposit = userExists.money < amount_initial;
+
+    if (isNotPossibleDeposit) {
+      throw new BadRequestException("Saldo insuficiente");
     }
 
     const cdb = await this.cbdDatabaseRepository.create({

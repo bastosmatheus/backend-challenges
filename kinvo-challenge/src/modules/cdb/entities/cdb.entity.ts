@@ -38,7 +38,7 @@ class Cdb {
   @Column()
   user_id: number;
 
-  @ManyToOne(() => User, (user) => user.cbds)
+  @ManyToOne(() => User, (user) => user.cdbs)
   @JoinColumn({ name: "user_id" })
   user: User;
 

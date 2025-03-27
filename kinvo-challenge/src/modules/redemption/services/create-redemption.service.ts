@@ -5,6 +5,7 @@ import {
 } from "@nestjs/common";
 import { RedemptionDatabaseRepository } from "../redemption.repository";
 import { CdbDatabaseRepository } from "src/modules/cdb/cdb.repository";
+import { UserDatabaseRepository } from "src/modules/user/user.repository";
 
 type CreateRedemptionServiceRequest = {
   amount: number;
@@ -15,7 +16,8 @@ type CreateRedemptionServiceRequest = {
 class CreateRedemptionService {
   constructor(
     private readonly redemptionDatabaseRepository: RedemptionDatabaseRepository,
-    private readonly cdbDatabaseRepository: CdbDatabaseRepository
+    private readonly cdbDatabaseRepository: CdbDatabaseRepository,
+    private readonly userDatabaseRepository: UserDatabaseRepository
   ) {}
 
   public async execute({ amount, cdb_id }: CreateRedemptionServiceRequest) {
@@ -52,9 +54,17 @@ class CreateRedemptionService {
         ? (cdbExists.profit = 0)
         : (cdbExists.profit -= amount);
 
+    const user = await this.userDatabaseRepository.getById(cdbExists.user_id);
+
+    if (!user) {
+      throw new NotFoundException("Nenhum usuário encontrado");
+    }
+
     cdbExists.total -= amount - taxes;
+    user.money += amount - taxes;
 
     await this.cdbDatabaseRepository.update(cdbExists);
+    await this.userDatabaseRepository.updateMoney(user);
 
     const redemption = await this.redemptionDatabaseRepository.create({
       amount,
