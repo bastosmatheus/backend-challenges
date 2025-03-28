@@ -13,7 +13,19 @@ class Redemption {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: "decimal", precision: 10, scale: 2 })
+  @Column({
+    type: "decimal",
+    precision: 10,
+    scale: 2,
+    transformer: {
+      to: (value: number) => {
+        if (!value) return 0;
+
+        return Number(Number(value).toFixed(2));
+      },
+      from: (value: string) => parseFloat(value),
+    },
+  })
   amount: number;
 
   @Column()

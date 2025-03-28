@@ -1,12 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import {
-  IsDecimal,
-  IsNumber,
-  IsString,
-  MaxLength,
-  Min,
-  MinLength,
-} from "class-validator";
+import { IsNumber, IsString, MaxLength, Min, MinLength } from "class-validator";
 
 class CreateCdbDto {
   @ApiProperty({
@@ -28,11 +21,14 @@ class CreateCdbDto {
     example: 200.75,
     required: true,
   })
-  @IsDecimal(
-    {},
-    { message: "O valor inicial da caixinha deve ser um número (200.00)" }
+  @IsNumber(
+    { allowNaN: false, maxDecimalPlaces: 2 },
+    {
+      message:
+        "O valor inicial da caixinha deve ser um número com até 2 casas decimais. Ex: 100.00",
+    }
   )
-  @Min(2, { message: "Valor minimo de 1 real para criar uma caixinha" })
+  @Min(1, { message: "Valor minimo de 1 real para criar uma caixinha" })
   amount_initial: number;
 
   @ApiProperty({

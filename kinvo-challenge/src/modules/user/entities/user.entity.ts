@@ -22,7 +22,20 @@ class User {
   @Column({ length: 100 })
   password: string;
 
-  @Column({ type: "decimal", precision: 10, scale: 2, default: 0 })
+  @Column({
+    type: "decimal",
+    precision: 10,
+    scale: 2,
+    default: 0,
+    transformer: {
+      to: (value: number) => {
+        if (!value) return 0;
+
+        return Number(Number(value).toFixed(2));
+      },
+      from: (value: string) => parseFloat(value),
+    },
+  })
   money: number;
 
   @OneToMany(() => Cdb, (cdb) => cdb.user_id)
