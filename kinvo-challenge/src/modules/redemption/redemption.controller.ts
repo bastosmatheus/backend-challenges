@@ -4,8 +4,6 @@ import { CreateRedemptionService } from "./services/create-redemption.service";
 import { GetAllRedemptionsByCdbService } from "./services/get-all-redemptions-by-cdb.service";
 import { GetRedemptionByIdService } from "./services/get-redemption-by-id.service";
 import { IsNumberParam } from "src/pipes/is-number-param.pipe";
-import { GetAllRedemptionsByCdbDto } from "./dto/get-all-redemptions-by-cdb.dto";
-import { GetRedemptionByIdDto } from "./dto/get-redemption-by-id.dto";
 
 @Controller("redemptions")
 class RedemptionController {
@@ -30,10 +28,8 @@ class RedemptionController {
   @Get("/cdb/:cdb_id")
   public async getAllRedemptionsByCdb(
     @IsNumberParam("cdb_id")
-    getAllRedemptionsByCdbDto: GetAllRedemptionsByCdbDto
+    cdb_id: number
   ) {
-    const { cdb_id } = getAllRedemptionsByCdbDto;
-
     const redemption = await this.getAllRedemptionsByCdbService.execute({
       cdb_id,
     });
@@ -42,11 +38,7 @@ class RedemptionController {
   }
 
   @Get(":id")
-  public async getById(
-    @IsNumberParam("id") getRedemptionByIdDto: GetRedemptionByIdDto
-  ) {
-    const { id } = getRedemptionByIdDto;
-
+  public async getById(@IsNumberParam("id") id: number) {
     const redemption = await this.getRedemptionByIdService.execute({
       id,
     });

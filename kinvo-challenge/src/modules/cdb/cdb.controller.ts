@@ -1,19 +1,10 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from "@nestjs/common";
+import { Controller, Get, Post, Body, Patch } from "@nestjs/common";
 import { CreateCdbDto } from "./dto/create-cdb.dto";
 import { UpdateCdbNameDto } from "./dto/update-cdb-name.dto";
 import { CreateCdbService } from "./services/create-cdb.service";
 import { GetCdbByIdService } from "./services/get-cdb-by-id.service";
 import { UpdateCdbNameService } from "./services/update-cdb-name.service";
 import { IsNumberParam } from "src/pipes/is-number-param.pipe";
-import { GetCdbByIdDto } from "./dto/get-cdb-by-id.dto";
 
 @Controller("cdbs")
 class CdbController {
@@ -24,9 +15,7 @@ class CdbController {
   ) {}
 
   @Get(":id")
-  public async getCdbById(@IsNumberParam("id") getCdbByIdDto: GetCdbByIdDto) {
-    const { id } = getCdbByIdDto;
-
+  public async getCdbById(@IsNumberParam("id") id: number) {
     const cdb = await this.getCdbByIdService.execute({ id });
 
     return cdb;

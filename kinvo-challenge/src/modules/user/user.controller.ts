@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Patch,
   Post,
   Query,
@@ -13,8 +14,6 @@ import { CreateUserService } from "./services/create-user.service";
 import { GetUserByIdService } from "./services/get-user-by-id.service";
 import { GetUserByEmailService } from "./services/get-user-by-email.service";
 import { UpdateMoneyService } from "./services/update-money.service";
-import { GetUserByEmailDto } from "./dto/get-user-by-email.dto";
-import { GetUserByIdDto } from "./dto/get-user-by-id.dto";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateMoneyDto } from "./dto/update-money.dto";
 import { IsNumberParam } from "src/pipes/is-number-param.pipe";
@@ -30,22 +29,14 @@ export class UserController {
   ) {}
 
   @Get("/email")
-  public async getUserByEmail(
-    @Query("email") getUserByEmailDto: GetUserByEmailDto
-  ) {
-    const { email } = getUserByEmailDto;
-
+  public async getUserByEmail(@Query("email") email: string) {
     const user = await this.getUserByEmailService.execute({ email });
 
     return user;
   }
 
   @Get(":id")
-  public async getUserById(
-    @IsNumberParam("id") getUserByIdDto: GetUserByIdDto
-  ) {
-    const { id } = getUserByIdDto;
-
+  public async getUserById(@IsNumberParam("id") id: number) {
     const user = await this.getUserByIdService.execute({ id });
 
     return user;

@@ -4,9 +4,6 @@ import { CreateApplicationService } from "./services/create-application.service"
 import { GetAllApplicationsByCdbService } from "./services/get-all-applications-by-cdb.service";
 import { GetApplicationByIdService } from "./services/get-application-by-id.service";
 import { IsNumberParam } from "src/pipes/is-number-param.pipe";
-import { GetApplicationByIdDto } from "./dto/get-application-by-id.dto";
-import { GetAllApplicationsByCdbDto } from "./dto/get-all-applications-by-cdb.dto";
-
 @Controller("applications")
 class ApplicationController {
   constructor(
@@ -18,10 +15,8 @@ class ApplicationController {
   @Get("/cdb/:cdb_id")
   public async getAllApplicationsByCdb(
     @IsNumberParam("cdb_id")
-    getAllApplicationsByCdbDto: GetAllApplicationsByCdbDto
+    cdb_id: number
   ) {
-    const { cdb_id } = getAllApplicationsByCdbDto;
-
     const application = await this.getAllApplicationsByCdbService.execute({
       cdb_id,
     });
@@ -30,11 +25,7 @@ class ApplicationController {
   }
 
   @Get(":id")
-  public async getById(
-    @IsNumberParam("id") getApplicationByIdDto: GetApplicationByIdDto
-  ) {
-    const { id } = getApplicationByIdDto;
-
+  public async getById(@IsNumberParam("id") id: number) {
     const application = await this.getApplicationByIdService.execute({
       id,
     });
