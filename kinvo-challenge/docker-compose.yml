@@ -1,0 +1,44 @@
+services:
+  kinvo-database:
+    image: mysql
+    container_name: kinvo-database
+
+    env_file:
+      - .env
+
+    ports:
+      - "3306:3306"
+
+    networks:
+      - kinvo-networks
+
+    restart: always
+    
+    volumes:
+      - mysql-volumes:/var/lib/mysql
+
+  kinvo-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    ports:
+      - "3000:3000"
+
+    env_file:
+      - .env
+      
+    restart: always
+
+    depends_on:
+      - kinvo-database
+
+    networks:
+      - kinvo-networks
+
+volumes:
+  mysql-volumes:
+
+networks:
+  kinvo-networks:
+    driver: bridge
