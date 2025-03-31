@@ -27,17 +27,25 @@ class CreateApplicationService {
       throw new NotFoundException("Nenhuma caixinha encontrada");
     }
 
-    const user = cdbExists.user;
+    const userExists = await this.userDatabaseRepository.getById(
+      cdbExists.user_id
+    );
 
-    const isNotPossibleDeposit = user.money - amount < 0;
+    if (!userExists) {
+      throw new NotFoundException("Nenhum usuário encontrado");
+    }
+
+    const isNotPossibleDeposit = userExists.money - amount < 0;
 
     if (isNotPossibleDeposit) {
       throw new BadRequestException("Saldo insuficiente");
     }
 
     cdbExists.total += amount;
+    userExists.money -= amount;
 
     await this.cdbDatabaseRepository.update(cdbExists);
+    await this.userDatabaseRepository.updateMoney(userExists);
 
     const application = await this.applicationDatabaseRepository.create({
       amount,

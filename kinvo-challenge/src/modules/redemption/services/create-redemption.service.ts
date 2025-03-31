@@ -27,7 +27,7 @@ class CreateRedemptionService {
       throw new NotFoundException("Nenhuma caixinha encontrada");
     }
 
-    const isNotPossibleRedeem = cdbExists.total - amount > 0;
+    const isNotPossibleRedeem = cdbExists.total - amount < 0;
 
     if (isNotPossibleRedeem) {
       throw new BadRequestException("Saldo insuficiente");
@@ -54,17 +54,19 @@ class CreateRedemptionService {
         ? (cdbExists.profit = 0)
         : (cdbExists.profit -= amount);
 
-    const user = await this.userDatabaseRepository.getById(cdbExists.user_id);
+    const userExists = await this.userDatabaseRepository.getById(
+      cdbExists.user_id
+    );
 
-    if (!user) {
+    if (!userExists) {
       throw new NotFoundException("Nenhum usuário encontrado");
     }
 
     cdbExists.total -= amount - taxes;
-    user.money += amount - taxes;
+    userExists.money += amount - taxes;
 
     await this.cdbDatabaseRepository.update(cdbExists);
-    await this.userDatabaseRepository.updateMoney(user);
+    await this.userDatabaseRepository.updateMoney(userExists);
 
     const redemption = await this.redemptionDatabaseRepository.create({
       amount,

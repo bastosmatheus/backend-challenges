@@ -16,7 +16,7 @@ type CreateCdbServiceRequest = {
 class CreateCdbService {
   constructor(
     private readonly userDatabaseRepository: UserDatabaseRepository,
-    private readonly cbdDatabaseRepository: CdbDatabaseRepository
+    private readonly cdbDatabaseRepository: CdbDatabaseRepository
   ) {}
 
   public async execute({
@@ -36,11 +36,14 @@ class CreateCdbService {
       throw new BadRequestException("Saldo insuficiente");
     }
 
-    const cdb = await this.cbdDatabaseRepository.create({
+    userExists.money -= amount_initial;
+
+    await this.userDatabaseRepository.updateMoney(userExists);
+
+    const cdb = await this.cdbDatabaseRepository.create({
       name,
       amount_initial,
       user_id,
-      total: amount_initial,
     });
 
     return cdb;

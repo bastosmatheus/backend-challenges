@@ -7,9 +7,10 @@ import { GetApplicationByIdService } from "./services/get-application-by-id.serv
 import { CdbModule } from "../cdb/cdb.module";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { Application } from "./entities/application.entity";
+import { UserModule } from "../user/user.module";
 
 @Module({
-  imports: [CdbModule, TypeOrmModule.forFeature([Application])],
+  imports: [CdbModule, UserModule, TypeOrmModule.forFeature([Application])],
   controllers: [ApplicationController],
   providers: [
     ApplicationDatabaseRepository,

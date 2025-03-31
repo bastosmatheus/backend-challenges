@@ -10,12 +10,14 @@ import { Cdb } from "./modules/cdb/entities/cdb.entity";
 import { Redemption } from "./modules/redemption/entities/redemption.entity";
 import { Application } from "./modules/application/entities/application.entity";
 import { ConfigModule, ConfigService } from "@nestjs/config";
+import { ScheduleModule } from "@nestjs/schedule";
 
 @Module({
   imports: [
+    ScheduleModule.forRoot(),
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: ".env",
+      envFilePath: ".env.development.local",
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -27,7 +29,7 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
         password: configService.get<string>("MYSQL_PASSWORD"),
         database: configService.get<string>("MYSQL_DATABASE"),
         entities: [User, Cdb, Redemption, Application],
-        migrations: [__dirname + "/database/migrations/**.ts"],
+        migrations: [__dirname + `/database/migrations/**.ts`],
         synchronize: false,
       }),
       inject: [ConfigService],

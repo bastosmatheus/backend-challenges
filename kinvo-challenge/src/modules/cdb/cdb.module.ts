@@ -7,6 +7,7 @@ import { CdbDatabaseRepository } from "./cdb.repository";
 import { UserModule } from "../user/user.module";
 import { Cdb } from "./entities/cdb.entity";
 import { TypeOrmModule } from "@nestjs/typeorm";
+import { UpdateProfitService } from "./services/update-profit.service";
 
 @Module({
   imports: [UserModule, TypeOrmModule.forFeature([Cdb])],
@@ -16,6 +17,7 @@ import { TypeOrmModule } from "@nestjs/typeorm";
     CreateCdbService,
     GetCdbByIdService,
     UpdateCdbNameService,
+    UpdateProfitService,
   ],
   exports: [CdbDatabaseRepository],
 })

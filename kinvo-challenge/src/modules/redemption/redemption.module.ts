@@ -7,9 +7,10 @@ import { GetRedemptionByIdService } from "./services/get-redemption-by-id.servic
 import { CdbModule } from "../cdb/cdb.module";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { Redemption } from "./entities/redemption.entity";
+import { UserModule } from "../user/user.module";
 
 @Module({
-  imports: [CdbModule, TypeOrmModule.forFeature([Redemption])],
+  imports: [CdbModule, UserModule, TypeOrmModule.forFeature([Redemption])],
   controllers: [RedemptionController],
   providers: [
     RedemptionDatabaseRepository,

@@ -18,7 +18,7 @@ const dataSource = new DataSource({
   password: configService.get<string>("MYSQL_PASSWORD"),
   database: configService.get<string>("MYSQL_DATABASE"),
   entities: [User, Cdb, Redemption, Application],
-  migrations: [__dirname + "src/database/migrations/**.ts"],
+  migrations: ["src/database/migrations/**.ts"],
   synchronize: false,
 });
 

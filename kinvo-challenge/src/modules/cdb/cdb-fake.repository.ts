@@ -10,6 +10,10 @@ class CdbDatabaseRepositoryMock implements CdbRepository {
   private readonly redemptions: Redemption[] = [];
   private readonly applications: Application[] = [];
 
+  public async getAll(): Promise<Cdb[]> {
+    return this.cdbs;
+  }
+
   public async getById(id: number): Promise<Cdb | null> {
     const cdb = this.cdbs.find((cdb) => cdb.id === id);
 
@@ -23,7 +27,7 @@ class CdbDatabaseRepositoryMock implements CdbRepository {
       id: this.cdbs.length + 1,
       ...cdb,
       profit: 0,
-      total: 0,
+      total: cdb.amount_initial,
       redemptions: this.redemptions,
       applications: this.applications,
       user: new User(),
