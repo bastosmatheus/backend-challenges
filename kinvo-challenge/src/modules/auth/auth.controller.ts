@@ -16,17 +16,13 @@ class AuthController {
 
   @Post("signin")
   public async create(@Body() signInUserDto: SignInUserDto) {
-    try {
-      const { email, password } = signInUserDto;
+    const { email, password } = signInUserDto;
 
-      const accessToken = await this.signInService.execute({ email, password });
+    const accessToken = await this.signInService.execute({ email, password });
 
-      return {
-        access_token: accessToken,
-      };
-    } catch (error: unknown) {
-      console.log(error);
-    }
+    return {
+      access_token: accessToken,
+    };
   }
 }
 
